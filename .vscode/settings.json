@@ -1,0 +1,8 @@
+{
+    "files.associations": {
+        "addressio.h": "c",
+        "limits.h": "c",
+        "stddef.h": "c",
+        "stdio.h": "c"
+    }
+}
