@@ -30,24 +30,38 @@ int main()
 
 bool analyzeCommand(const char *command)
 {
-    if (strcmp(command, "quit") == 0) {
-        return false;
+    char cmd[COMMANDSIZE];
+    void *cmdArgs;
+    int parseResult = parseCommand(command, cmd, COMMANDSIZE, &cmdArgs);
+    if (parseResult == E_SUCCESS) {
+        if (strcmp(cmd, "quit") == 0) {
+            return false;
+        }
+        else if (strcmp(cmd, "help") == 0) {
+            showHelp();
+        }
+        else if (strcmp(cmd, "version") == 0) {
+            showVersion();
+        }
+        else if (strcmp(cmd, "add") == 0) {
+        }
+        else {
+            printError("Unknown command");
+        }
     }
-    else if (strcmp(command, "help") == 0) {
-        showHelp();
-    }
-    else if (strcmp(command, "version") == 0) {
-        showVersion();
-    }
-
-    
-    else if (strncmp(command, "add ", sizeof(char) * 4) == 0 ||
-                strncmp(command, "add\n", sizeof(char) * 4)) {
-        printf("Add a todo\n");
-    }
-    else {
+    else if (parseResult == E_INVALIDCMD) {
         printError("Unknown command");
     }
+    else if (parseResult == E_INVALIDARGS) {
+        printError("Invalid args");
+    }
+    else if (parseResult == E_REQUIREDARGSMISSING) {
+        printError("Required arguments are missing");
+    }
+    else if (parseResult == E_DISPLAYHELP) {
+        printCommandHelp(cmd);
+    }
+    
     return true;
 }
 

@@ -5,12 +5,23 @@ void runCommandTests();
 void parseCommand_WithNullCommandStr_ReturnInvalidArgs();
 void parseCommand_WithNullCommand_ReturnInvalidArgs();
 void parseCommand_WithEmptyCommandStr_ReturnInvalidCmd();
-
+void parseCommand_WithZeroLengthCommand_ReturnInvalidArgs();
+void parseCommand_WithhelpCommandStr_ReturnSuccess();
+void parseCommand_WithaddWithoutArgsCommandStr_ReturnSuccess();
+void parseCommand_WithaddAndTParamCommandStr_ReturnSuccess();
+void parseCommand_WithaddAndTitleParamWithQuotedValue_ReturnSuccess();
 void isCommandAvailable_WithNullCommand_ReturnFalse();
 void isCommandAvailable_WithEmptyCommand_ReturnFalse();
 void isCommandAvailable_WithquitCommand_ReturnTrue();
 void isCommandAvailable_WithQuitCommand_ReturnFalse();
 void isCommandAvailable_WithQUITCommand_ReturnFalse();
 void isCommandAvailable_WithaddCommand_ReturnTrue();
+void getArgumentsFromString_WithaddWithoutArgs_ReturnOneArg();
+void getArgumentsFromString_WithaddWithTParamWithoutValue_ReturnTwoArg();
+void getArgumentsFromString_WithaddWithTParamWithoutValueExtraSpaces_ReturnOneArg();
+void getArgumentsFromString_WithaddWithTParamAndUnquotedValue_ReturnThreeArg();
+void getArgumentsFromString_WithaddWithTParamAndQuotedValue_ReturnThreeArg();
+void getArgumentsFromString_WithaddWithTitleParamAndQuotedValue_ReturnThreeArg();
+void getArgumentsFromString_WithaddWithTAndPParam_ReturnFiveArg();
 
 #endif

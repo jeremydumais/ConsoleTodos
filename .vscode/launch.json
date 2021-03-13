@@ -5,13 +5,32 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "(gdb) Launch",
+            "name": "(gdb) ConsoleTodos",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/build/addressbook",
+            "program": "${workspaceFolder}/build/consoletodos/consoletodos",
             "args": [],
             "stopAtEntry": false,
-            "cwd": "${workspaceFolder}/build",
+            "cwd": "${workspaceFolder}/build/consoletodos",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ]
+        },
+        {
+            "name": "(gdb) ConsoleTodos.Model.Test",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/consoletodos.model/test/consoletodos.model.test",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}/build/consoletodos.model",
             "environment": [],
             "externalConsole": false,
             "MIMode": "gdb",

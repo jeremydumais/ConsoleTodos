@@ -4,6 +4,13 @@
         "limits.h": "c",
         "stddef.h": "c",
         "stdio.h": "c",
-        "command.h": "c"
+        "command.h": "c",
+        "commandtest.h": "c",
+        "stdbool.h": "c",
+        "type_traits": "c",
+        "cstdlib": "c",
+        "stdlib.h": "c",
+        "commandadd.h": "c",
+        "getopt.h": "c"
     }
 }
