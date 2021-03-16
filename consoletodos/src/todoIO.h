@@ -3,7 +3,7 @@
 
 #include "todo.h"
 
-int getStringValue(char *value, const int MAXLENGTH);
+int getStringValue(char **value);
 int getIntValue(int *value);
 
 #endif 

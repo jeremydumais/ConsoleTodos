@@ -11,6 +11,10 @@
         "cstdlib": "c",
         "stdlib.h": "c",
         "commandadd.h": "c",
-        "getopt.h": "c"
+        "getopt.h": "c",
+        "readline.h": "c",
+        "string.h": "c",
+        "typeinfo": "c",
+        "ctype.h": "c"
     }
 }

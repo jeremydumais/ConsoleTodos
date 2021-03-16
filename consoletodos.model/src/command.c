@@ -1,10 +1,16 @@
 #define __STDC_WANT_LIB_EXT1__ 1
 #include "command.h"
-#include "commandAdd.h"
 #include <ctype.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+
+static commandDefinition commandDefinitions[COMMANDNB] = {
+    { .name = "help", .parseCommand = NULL, .executeCommand = NULL, .printHelp = NULL, .freeCommandArgs = NULL },
+    { .name = "quit", .parseCommand = NULL, .executeCommand = NULL, .printHelp = NULL, .freeCommandArgs = NULL },
+    { .name = "version", .parseCommand = NULL, .executeCommand = NULL, .printHelp = NULL, .freeCommandArgs = NULL },
+    { .name = "add", .parseCommand = &parseCommandAdd, .executeCommand = NULL, .printHelp = &printCommandAddHelp, .freeCommandArgs = &freeCommandAdd }
+};
 
 int parseCommand(const char *cmdStr, char *cmd, size_t cmdLength, void **cmdArgs)
 {
@@ -30,23 +36,19 @@ int parseCommand(const char *cmdStr, char *cmd, size_t cmdLength, void **cmdArgs
     
     char **argv;
     int argc = _getArgumentsFromString(cmdStr, &argv);
-    if (strcmp(cmd, "quit") == 0) {
-        *cmdArgs = NULL;
-    }
-    else if (strcmp(cmd, "help") == 0) {
-        *cmdArgs = NULL;
-    }
-    else if (strcmp(cmd, "version") == 0) {
-        *cmdArgs = NULL;
-    }
-    else if (strcmp(cmd, "add") == 0) {
-        int parseResult = parseCommandAdd(argc, argv, cmdArgs);
-        if (parseResult != E_SUCCESS) {
-            return parseResult;
+    for(int i = 0; i < COMMANDNB; i++) {
+        if (strcmp(cmd, commandDefinitions[i].name) == 0) {
+            if (commandDefinitions[i].parseCommand != NULL) {
+                int parseResult = (*commandDefinitions[i].parseCommand)(argc, argv, cmdArgs);
+                if (parseResult != E_SUCCESS) {
+                    return parseResult;
+                }
+            }
+            else {
+                *cmdArgs = NULL;
+            }
+            break;
         }
-        /*commandAddArgs *cmdAddArgs = *((commandAddArgs **)cmdArgs);
-        printf("%s : %d\n", cmdAddArgs->title, cmdAddArgs->priority);*/
-
     }
 
     return E_SUCCESS;
@@ -54,20 +56,12 @@ int parseCommand(const char *cmdStr, char *cmd, size_t cmdLength, void **cmdArgs
 
 bool isCommandAvailable(const char *cmdStr)
 {
-#define NBCOMMAND 4
-    const char *commands[NBCOMMAND] = {
-        "quit",
-        "help",
-        "version",
-        "add"};
-
-    if (cmdStr == NULL)
-    {
+    if (cmdStr == NULL) {
         return false;
     }
-    for (int i = 0; i < NBCOMMAND; i++)
+    for (int i = 0; i < COMMANDNB; i++)
     {
-        if (strcmp(cmdStr, commands[i]) == 0)
+        if (strcmp(cmdStr, commandDefinitions[i].name) == 0)
         {
             return true;
         }
@@ -77,15 +71,21 @@ bool isCommandAvailable(const char *cmdStr)
 
 void freeCommand(const char *cmd, void **cmdArgs)
 {
-    if (strcmp(cmd, "add") == 0) {
-        freeCommandAdd((commandAddArgs **)cmdArgs);
+    for(int i = 0; i < COMMANDNB; i++) {
+        if (strcmp(cmd, commandDefinitions[i].name) == 0) {
+            (*commandDefinitions[i].freeCommandArgs)(cmdArgs);
+            break;
+        }
     }
 }
 
 void printCommandHelp(const char *cmd) 
 {
-    if (strcmp(cmd, "add") == 0) {
-        printCommandAddHelp();
+    for(int i = 0; i < COMMANDNB; i++) {
+        if (strcmp(cmd, commandDefinitions[i].name) == 0) {
+            (*commandDefinitions[i].printHelp)();
+            break;
+        }
     }
 }
 
@@ -119,8 +119,8 @@ int _getArgumentsFromString(const char *cmdStr, char ***argv)
             state = IN_WORD;
             startOfWord = p; /* word starts here */
             if (haveReachTheEnd) {
-                //Process the on char word
-                
+                //The argument as only on char and this is the last char
+                p--; //Reprocess the last character as a Word
             }
             i = 1;
             continue;
@@ -172,3 +172,9 @@ int _getArgumentsFromString(const char *cmdStr, char ***argv)
     }
     return itemFound;
 }
+
+/*commandDefinition **getCommandDefinitions() 
+{
+    return &commandDefinitions;
+}*/
+

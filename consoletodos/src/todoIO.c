@@ -1,12 +1,14 @@
 #include "todoIO.h"
+#include <readline/readline.h>
+#include <readline/history.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-int getStringValue(char *value, const int MAXLENGTH)
+int getStringValue(char **value)
 {
-    if (fgets(value, MAXLENGTH, stdin) != NULL) {
-        value[strcspn(value, "\n")] = 0;
+    if (((*value) = readline(NULL)) != NULL) {
+        add_history((*value));
         return 0;
     }
     else {

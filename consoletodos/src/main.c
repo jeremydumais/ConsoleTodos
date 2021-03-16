@@ -12,9 +12,9 @@ int main()
     bool quit = false;
 
     while(!quit) {
-        char command[COMMANDSIZE];
-        printf("❯ ");
-        if (getStringValue(command, COMMANDSIZE) == 0) {
+        char *command;
+        printf("> ");
+        if (getStringValue(&command) == 0) {
             if (!analyzeCommand(command)) {
                 quit = true;
                 break;
@@ -38,7 +38,14 @@ bool analyzeCommand(const char *command)
             return false;
         }
         else if (strcmp(cmd, "help") == 0) {
-            showHelp();
+            commandDefinition *commandDefinitions = *(getCommandDefinitions());
+            for(int i = 0; i < COMMANDNB; i++) {
+                if (strcmp(cmd, commandDefinitions[i].name) == 0) {
+                    (*commandDefinitions[i].executeCommand)(&cmdArgs);
+                    break;
+                }
+            }
+            //showHelp();
         }
         else if (strcmp(cmd, "version") == 0) {
             showVersion();
@@ -70,14 +77,6 @@ void printError(const char *error)
     printf("\033[1;31m"); 
     printf("%s\n", error);
     printf("\033[0m"); 
-}
-
-void showHelp() 
-{
-    printf("Available commands\n");
-    printf("  help      Display the help (*You are here)\n");
-    printf("  version   Display the version of the application\n");
-    printf("  quit      Quit the application \n");
 }
 
 void showVersion()

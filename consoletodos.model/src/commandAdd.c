@@ -34,7 +34,6 @@ int parseCommandAdd(int argc, char **argv, void **cmdAddArgs)
         if (c == -1) {
             break;
         }
-
         switch (c)
         {
             case '?':
@@ -64,10 +63,11 @@ int parseCommandAdd(int argc, char **argv, void **cmdAddArgs)
     return 0;
 }
 
-void freeCommandAdd(commandAddArgs **cmdAddArgs) 
+void freeCommandAdd(void **cmdAddArgs) 
 {
-    free((*cmdAddArgs)->title);
-    free(*cmdAddArgs);
+    commandAddArgs **args = (commandAddArgs **)cmdAddArgs;
+    free((*args)->title);
+    free(*args);
 }
 
 void printCommandAddHelp() 

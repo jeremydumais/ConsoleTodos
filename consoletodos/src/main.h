@@ -5,7 +5,6 @@
 
 bool analyzeCommand(const char *command);
 void printError(const char *error);
-void showHelp();
 void showVersion();
 
 #endif

@@ -1,18 +1,21 @@
 #ifndef COMMAND_H
 #define COMMAND_H
 
+#include "commandAdd.h"
+#include "commandHelp.h"
 #include <stdbool.h>
 #include <stddef.h>
 
-typedef struct {
-    char *flag;
-    char *value;
-} commandArgument;
+#define COMMANDNB 4
 
 typedef struct {
-    int argc;
-    commandArgument *args;
-} command;
+    char *name;
+    int (*parseCommand)(int argc, char **argv, void **cmdAddArgs);
+    int (*executeCommand)(void **cmdAddArgs);
+    void (*printHelp)();
+    void (*freeCommandArgs)(void **cmdAddArgs);
+    
+} commandDefinition;
 
 enum _command_error {
     E_SUCCESS = 0,
@@ -27,5 +30,6 @@ bool isCommandAvailable(const char *cmdStr);
 void freeCommand(const char *cmd, void **cmdArgs);
 void printCommandHelp(const char *cmd);
 int _getArgumentsFromString(const char* cmdStr, char ***argv);
+//commandDefinition **getCommandDefinitions();
 
 #endif
