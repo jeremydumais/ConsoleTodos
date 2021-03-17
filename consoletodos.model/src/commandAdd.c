@@ -63,6 +63,13 @@ int parseCommandAdd(int argc, char **argv, void **cmdAddArgs)
     return 0;
 }
 
+int executeCommandAdd(void **cmdAddArgs) 
+{
+    commandAddArgs *args = *((commandAddArgs **)cmdAddArgs);
+    printf("%s\n", args->title);
+    return E_SUCCESS;
+}
+
 void freeCommandAdd(void **cmdAddArgs) 
 {
     commandAddArgs **args = (commandAddArgs **)cmdAddArgs;

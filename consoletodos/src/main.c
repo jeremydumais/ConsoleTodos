@@ -37,23 +37,11 @@ bool analyzeCommand(const char *command)
         if (strcmp(cmd, "quit") == 0) {
             return false;
         }
-        else if (strcmp(cmd, "help") == 0) {
-            commandDefinition *commandDefinitions = *(getCommandDefinitions());
-            for(int i = 0; i < COMMANDNB; i++) {
-                if (strcmp(cmd, commandDefinitions[i].name) == 0) {
-                    (*commandDefinitions[i].executeCommand)(&cmdArgs);
-                    break;
-                }
-            }
-            //showHelp();
-        }
         else if (strcmp(cmd, "version") == 0) {
             showVersion();
         }
-        else if (strcmp(cmd, "add") == 0) {
-        }
         else {
-            printError("Unknown command");
+            executeCommand(cmd, &cmdArgs);
         }
     }
     else if (parseResult == E_INVALIDCMD) {

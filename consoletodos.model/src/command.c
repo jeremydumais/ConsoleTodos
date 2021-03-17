@@ -6,10 +6,10 @@
 #include <string.h>
 
 static commandDefinition commandDefinitions[COMMANDNB] = {
-    { .name = "help", .parseCommand = NULL, .executeCommand = NULL, .printHelp = NULL, .freeCommandArgs = NULL },
+    { .name = "help", .parseCommand = NULL, .executeCommand = &executeCommandHelp, .printHelp = NULL, .freeCommandArgs = NULL },
     { .name = "quit", .parseCommand = NULL, .executeCommand = NULL, .printHelp = NULL, .freeCommandArgs = NULL },
     { .name = "version", .parseCommand = NULL, .executeCommand = NULL, .printHelp = NULL, .freeCommandArgs = NULL },
-    { .name = "add", .parseCommand = &parseCommandAdd, .executeCommand = NULL, .printHelp = &printCommandAddHelp, .freeCommandArgs = &freeCommandAdd }
+    { .name = "add", .parseCommand = &parseCommandAdd, .executeCommand = &executeCommandAdd, .printHelp = &printCommandAddHelp, .freeCommandArgs = &freeCommandAdd }
 };
 
 int parseCommand(const char *cmdStr, char *cmd, size_t cmdLength, void **cmdArgs)
@@ -67,6 +67,19 @@ bool isCommandAvailable(const char *cmdStr)
         }
     }
     return false;
+}
+
+void executeCommand(const char *cmd, void **cmdArgs) 
+{
+    for(int i = 0; i < COMMANDNB; i++) {
+        if (strcmp(cmd, commandDefinitions[i].name) == 0) {
+            int (*executeFunction)(void **cmdAddArgs) = commandDefinitions[i].executeCommand;
+            if (executeFunction != NULL) {
+                (*commandDefinitions[i].executeCommand)(cmdArgs);
+            }
+            break;
+        }
+    }
 }
 
 void freeCommand(const char *cmd, void **cmdArgs)
@@ -172,9 +185,4 @@ int _getArgumentsFromString(const char *cmdStr, char ***argv)
     }
     return itemFound;
 }
-
-/*commandDefinition **getCommandDefinitions() 
-{
-    return &commandDefinitions;
-}*/
 

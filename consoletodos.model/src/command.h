@@ -27,9 +27,9 @@ enum _command_error {
 
 int parseCommand(const char *cmdStr, char *cmd, size_t cmdLength, void **cmdArgs);
 bool isCommandAvailable(const char *cmdStr);
+void executeCommand(const char *cmd, void **cmdArgs);
 void freeCommand(const char *cmd, void **cmdArgs);
 void printCommandHelp(const char *cmd);
 int _getArgumentsFromString(const char* cmdStr, char ***argv);
-//commandDefinition **getCommandDefinitions();
 
 #endif

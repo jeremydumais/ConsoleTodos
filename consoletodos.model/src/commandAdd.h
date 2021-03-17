@@ -9,6 +9,7 @@ typedef struct {
 } commandAddArgs;
 
 int parseCommandAdd(int argc, char **argv, void **cmdAddArgs);
+int executeCommandAdd(void **cmdAddArgs);
 void freeCommandAdd(void **cmdAddArgs);
 void printCommandAddHelp();
 #endif
