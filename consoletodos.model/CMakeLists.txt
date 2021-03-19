@@ -3,7 +3,8 @@ set(PROJECT_NAME   "consoletodos.model")
 add_library(${PROJECT_NAME} SHARED ${CMAKE_CURRENT_SOURCE_DIR}/src/todo.c
                                    ${CMAKE_CURRENT_SOURCE_DIR}/src/command.c
                                    ${CMAKE_CURRENT_SOURCE_DIR}/src/commandHelp.c
-                                   ${CMAKE_CURRENT_SOURCE_DIR}/src/commandAdd.c)
+                                   ${CMAKE_CURRENT_SOURCE_DIR}/src/commandAdd.c
+                                   ${CMAKE_CURRENT_SOURCE_DIR}/src/commandShow.c)
 if ("${CMAKE_C_COMPILER_ID}" STREQUAL "GNU") #gcc
   # https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html
   target_compile_options(${PROJECT_NAME}

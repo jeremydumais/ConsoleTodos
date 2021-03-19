@@ -1,5 +1,6 @@
 #include "commandAdd.h"
 #include "command.h"
+#include "todo.h"
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdio.h>
@@ -40,7 +41,7 @@ int parseCommandAdd(int argc, char **argv, void **cmdAddArgs)
                 return E_DISPLAYHELP;
             break;
             case 't':
-            //Check the the title is not empty
+            //TODO Check the title is not empty
             title = optarg;
             break;
             case 'p':
@@ -63,10 +64,24 @@ int parseCommandAdd(int argc, char **argv, void **cmdAddArgs)
     return 0;
 }
 
-int executeCommandAdd(void **cmdAddArgs) 
+int executeCommandAdd(void **cmdAddArgs, void **list, int *listLength) 
 {
     commandAddArgs *args = *((commandAddArgs **)cmdAddArgs);
-    printf("%s\n", args->title);
+    //todo *todos = (todo *)(*list);
+    if (*list == NULL) {
+        *list = malloc(sizeof(todo));
+    }
+    else {
+        *list = realloc(*list, sizeof(todo) * ((*listLength) + 1));
+    }
+
+    todo *todos = *((todo **)list);
+    size_t titleLength = strlen(args->title);
+    todos[*listLength].name = malloc(sizeof(char) * (titleLength + 1));
+    strcpy(todos[*listLength].name, args->title);
+    todos[*listLength].name[titleLength] = 0;
+    (*listLength)++;
+    
     return E_SUCCESS;
 }
 
@@ -84,5 +99,4 @@ void printCommandAddHelp()
     printf("-t, --title=<title>         The title of the todo\n");
     printf("-p, --priority=<priority>   The priority of the todo (Starting at 1)\n");
     printf("-?, --help                  Display the help of the add command\n\n");
-
 }

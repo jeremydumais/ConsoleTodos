@@ -1,6 +1,6 @@
 #ifndef COMMANDHELP_H
 #define COMMANDHELP_H
 
-int executeCommandHelp(void **);
+int executeCommandHelp(void **, void **, int *);
 
 #endif

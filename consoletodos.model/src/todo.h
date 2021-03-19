@@ -7,9 +7,10 @@
 #define DESCRSIZE 512
 
 typedef struct {
-    char name[NAMESIZE];
-    char description[DESCRSIZE];
+    char *name;
+    char *description;
     time_t datetime;
-} address;
+    int priority;
+} todo;
 
 #endif

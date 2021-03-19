@@ -9,7 +9,8 @@ static commandDefinition commandDefinitions[COMMANDNB] = {
     { .name = "help", .parseCommand = NULL, .executeCommand = &executeCommandHelp, .printHelp = NULL, .freeCommandArgs = NULL },
     { .name = "quit", .parseCommand = NULL, .executeCommand = NULL, .printHelp = NULL, .freeCommandArgs = NULL },
     { .name = "version", .parseCommand = NULL, .executeCommand = NULL, .printHelp = NULL, .freeCommandArgs = NULL },
-    { .name = "add", .parseCommand = &parseCommandAdd, .executeCommand = &executeCommandAdd, .printHelp = &printCommandAddHelp, .freeCommandArgs = &freeCommandAdd }
+    { .name = "add", .parseCommand = &parseCommandAdd, .executeCommand = &executeCommandAdd, .printHelp = &printCommandAddHelp, .freeCommandArgs = &freeCommandAdd },
+    { .name = "show", .parseCommand = &parseCommandShow, .executeCommand = &executeCommandShow, .printHelp = &printCommandShowHelp, .freeCommandArgs = NULL }
 };
 
 int parseCommand(const char *cmdStr, char *cmd, size_t cmdLength, void **cmdArgs)
@@ -69,13 +70,13 @@ bool isCommandAvailable(const char *cmdStr)
     return false;
 }
 
-void executeCommand(const char *cmd, void **cmdArgs) 
+void executeCommand(const char *cmd, void **cmdArgs, void **list, int *listLength) 
 {
     for(int i = 0; i < COMMANDNB; i++) {
         if (strcmp(cmd, commandDefinitions[i].name) == 0) {
-            int (*executeFunction)(void **cmdAddArgs) = commandDefinitions[i].executeCommand;
+            int (*executeFunction)(void **cmdAddArgs, void **list, int *listLength) = commandDefinitions[i].executeCommand;
             if (executeFunction != NULL) {
-                (*commandDefinitions[i].executeCommand)(cmdArgs);
+                (*commandDefinitions[i].executeCommand)(cmdArgs, list, listLength);
             }
             break;
         }
@@ -96,7 +97,9 @@ void printCommandHelp(const char *cmd)
 {
     for(int i = 0; i < COMMANDNB; i++) {
         if (strcmp(cmd, commandDefinitions[i].name) == 0) {
-            (*commandDefinitions[i].printHelp)();
+            void (*helpFunction)() = commandDefinitions[i].printHelp;
+            if (helpFunction != NULL)
+            (*helpFunction)();
             break;
         }
     }

@@ -9,6 +9,8 @@
 
 int main()
 {
+    todos = NULL;
+    todoCount = 0;
     bool quit = false;
 
     while(!quit) {
@@ -41,7 +43,7 @@ bool analyzeCommand(const char *command)
             showVersion();
         }
         else {
-            executeCommand(cmd, &cmdArgs);
+            executeCommand(cmd, &cmdArgs, (void **)&todos, &todoCount);
         }
     }
     else if (parseResult == E_INVALIDCMD) {
