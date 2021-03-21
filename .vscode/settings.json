@@ -16,6 +16,9 @@
         "string.h": "c",
         "typeinfo": "c",
         "ctype.h": "c",
-        "commandshow.h": "c"
+        "commandshow.h": "c",
+        "todostorage.h": "c",
+        "commandhelp.h": "c",
+        "commandload.h": "c"
     }
 }

@@ -1,6 +1,7 @@
 #include "main.h"
 #include "command.h"
-#include "todoIO.h"
+#include "shellUtil.h"
+#include "todoStorage.h"
 #include <stdio.h>
 #include <stdbool.h>
 #include <string.h>
@@ -11,6 +12,13 @@ int main()
 {
     todos = NULL;
     todoCount = 0;
+
+    int initializeStorageResult = launchStorageInitialization();
+    if (initializeStorageResult != E_STORAGESUCCESS) {
+        printError(getLastStorageError());
+        return -1;
+    }
+
     bool quit = false;
 
     while(!quit) {

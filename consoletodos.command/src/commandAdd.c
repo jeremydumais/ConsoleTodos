@@ -1,6 +1,7 @@
 #include "commandAdd.h"
 #include "command.h"
 #include "todo.h"
+#include "todoStorage.h"
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdio.h>
@@ -61,13 +62,12 @@ int parseCommandAdd(int argc, char **argv, void **cmdAddArgs)
     strncpy(args->title, title, titleLength);
     args->title[titleLength] = '\0';
     args->priority = priority;
-    return 0;
+    return E_SUCCESS;
 }
 
 int executeCommandAdd(void **cmdAddArgs, void **list, int *listLength) 
 {
     commandAddArgs *args = *((commandAddArgs **)cmdAddArgs);
-    //todo *todos = (todo *)(*list);
     if (*list == NULL) {
         *list = malloc(sizeof(todo));
     }
@@ -81,7 +81,7 @@ int executeCommandAdd(void **cmdAddArgs, void **list, int *listLength)
     strcpy(todos[*listLength].name, args->title);
     todos[*listLength].name[titleLength] = 0;
     (*listLength)++;
-    
+
     return E_SUCCESS;
 }
 

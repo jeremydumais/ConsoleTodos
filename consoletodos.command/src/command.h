@@ -4,10 +4,12 @@
 #include "commandAdd.h"
 #include "commandHelp.h"
 #include "commandShow.h"
+#include "commandLoad.h"
+#include "todo.h"
 #include <stdbool.h>
 #include <stddef.h>
 
-#define COMMANDNB 5
+#define COMMANDNB 6
 
 typedef struct {
     char *name;
@@ -18,6 +20,9 @@ typedef struct {
     
 } commandDefinition;
 
+static todo *todos;
+static int todoCount;
+
 enum _command_error {
     E_SUCCESS = 0,
     E_INVALIDCMD = -1,
@@ -26,6 +31,7 @@ enum _command_error {
     E_DISPLAYHELP = -4
 };
 
+int launchStorageInitialization();
 int parseCommand(const char *cmdStr, char *cmd, size_t cmdLength, void **cmdArgs);
 bool isCommandAvailable(const char *cmdStr);
 void executeCommand(const char *cmd, void **cmdArgs, void **list, int *listLength);

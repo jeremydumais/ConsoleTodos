@@ -1,9 +1,9 @@
 set(PROJECT_NAME   "consoletodos")
 
 add_executable(${PROJECT_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/src/main.c 
-                               ${CMAKE_CURRENT_SOURCE_DIR}/src/todoIO.c)
+                               ${CMAKE_CURRENT_SOURCE_DIR}/src/shellUtil.c)
                                if ("${CMAKE_C_COMPILER_ID}" STREQUAL "GNU") #gcc
-target_link_libraries(${PROJECT_NAME} consoletodos.model readline)
+target_link_libraries(${PROJECT_NAME} consoletodos.command readline)
 # https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html
 target_compile_options(${PROJECT_NAME}
     PRIVATE "-Wfatal-errors" # stops on first error

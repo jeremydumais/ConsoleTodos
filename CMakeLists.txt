@@ -33,7 +33,11 @@ endif()
 include_directories(${CMAKE_CURRENT_BINARY_DIR}/unity-src/src)
 add_subdirectory(${CMAKE_CURRENT_BINARY_DIR}/unity-src EXCLUDE_FROM_ALL)
 
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/consoletodos.model/src)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/consoletodos.model/src
+                    ${CMAKE_CURRENT_SOURCE_DIR}/consoletodos.command/src
+                    ${CMAKE_CURRENT_SOURCE_DIR}/consoletodos.storage/src)
 
 add_subdirectory(consoletodos.model)
+add_subdirectory(consoletodos.command)
+add_subdirectory(consoletodos.storage)
 add_subdirectory(consoletodos)

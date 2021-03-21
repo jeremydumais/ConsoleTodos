@@ -1,5 +1,6 @@
 #define __STDC_WANT_LIB_EXT1__ 1
 #include "command.h"
+#include "todoStorage.h"
 #include <ctype.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -10,8 +11,14 @@ static commandDefinition commandDefinitions[COMMANDNB] = {
     { .name = "quit", .parseCommand = NULL, .executeCommand = NULL, .printHelp = NULL, .freeCommandArgs = NULL },
     { .name = "version", .parseCommand = NULL, .executeCommand = NULL, .printHelp = NULL, .freeCommandArgs = NULL },
     { .name = "add", .parseCommand = &parseCommandAdd, .executeCommand = &executeCommandAdd, .printHelp = &printCommandAddHelp, .freeCommandArgs = &freeCommandAdd },
-    { .name = "show", .parseCommand = &parseCommandShow, .executeCommand = &executeCommandShow, .printHelp = &printCommandShowHelp, .freeCommandArgs = NULL }
+    { .name = "show", .parseCommand = &parseCommandShow, .executeCommand = &executeCommandShow, .printHelp = &printCommandShowHelp, .freeCommandArgs = NULL },
+    { .name = "load", .parseCommand = &parseCommandLoad, .executeCommand = &executeCommandLoad, .printHelp = NULL, .freeCommandArgs = &freeCommandLoad }
 };
+
+int launchStorageInitialization() 
+{ 
+    return initializeStorage();
+}
 
 int parseCommand(const char *cmdStr, char *cmd, size_t cmdLength, void **cmdArgs)
 {
@@ -188,4 +195,3 @@ int _getArgumentsFromString(const char *cmdStr, char ***argv)
     }
     return itemFound;
 }
-
