@@ -52,6 +52,7 @@ int parseCommandShow(int argc, char **argv, void **cmdAddArgs)
 
 int executeCommandShow(void **cmdAddArgs, void **list, int *listLength) 
 {
+    (void)cmdAddArgs; //Not used
     todo *todos = (todo *)(*list);
 
     //Print todo header
@@ -64,6 +65,7 @@ int executeCommandShow(void **cmdAddArgs, void **list, int *listLength)
 
 void freeCommandShow(void **cmdAddArgs) 
 {
+    (void)cmdAddArgs; //Not used
     //TODO Implement the free for that resource
 }
 

@@ -7,6 +7,9 @@ int executeCommandHelp(void **args, void **list, int *listLength)
     if (*args != NULL) {
         return E_INVALIDARGS;
     }
+    (void)list; //Not used
+    (void)listLength; //Not used
+
     printf("Available commands\n");
     printf("  add       Add a new todo\n");   
     printf("  show      Print the todo list\n");   

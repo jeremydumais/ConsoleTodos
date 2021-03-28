@@ -1,9 +1,11 @@
 #include "main.h"
 #include "command.h"
 #include "shellUtil.h"
+#include "errStorage.h"
 #include "todoStorage.h"
 #include <stdio.h>
 #include <stdbool.h>
+#include <stdlib.h>
 #include <string.h>
 
 #define COMMANDSIZE 1024
@@ -14,9 +16,9 @@ int main()
     todoCount = 0;
 
     int initializeStorageResult = launchStorageInitialization();
-    if (initializeStorageResult != E_STORAGESUCCESS) {
+    if (initializeStorageResult != E_TODOSTORAGE_SUCCESS) {
         printError(getLastStorageError());
-        return -1;
+        return EXIT_FAILURE;
     }
 
     bool quit = false;
@@ -32,10 +34,10 @@ int main()
         }
         else {
             printError("Unable to read the command");
-            return -1;
+            return EXIT_FAILURE;
         }
     }
-    return 0;
+    return EXIT_SUCCESS;
 }
 
 bool analyzeCommand(const char *command)

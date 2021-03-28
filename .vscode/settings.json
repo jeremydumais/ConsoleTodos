@@ -19,6 +19,12 @@
         "commandshow.h": "c",
         "todostorage.h": "c",
         "commandhelp.h": "c",
-        "commandload.h": "c"
+        "commandload.h": "c",
+        "unistd.h": "c",
+        "stat.h": "c",
+        "configstorage.h": "c",
+        "errstorage.h": "c",
+        "errno.h": "c",
+        "todo.h": "c"
     }
 }

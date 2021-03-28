@@ -6,6 +6,9 @@
 #include <stdio.h>
 #include <string.h>
 
+todo *todos;
+int todoCount;
+
 static commandDefinition commandDefinitions[COMMANDNB] = {
     { .name = "help", .parseCommand = NULL, .executeCommand = &executeCommandHelp, .printHelp = NULL, .freeCommandArgs = NULL },
     { .name = "quit", .parseCommand = NULL, .executeCommand = NULL, .printHelp = NULL, .freeCommandArgs = NULL },

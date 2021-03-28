@@ -20,15 +20,16 @@ typedef struct {
     
 } commandDefinition;
 
-static todo *todos;
-static int todoCount;
+extern todo *todos;
+extern int todoCount;
 
 enum _command_error {
     E_SUCCESS = 0,
     E_INVALIDCMD = -1,
     E_INVALIDARGS = -2,
     E_REQUIREDARGSMISSING = -3,
-    E_DISPLAYHELP = -4
+    E_DISPLAYHELP = -4,
+    E_EXECUTIONERROR = -5
 };
 
 int launchStorageInitialization();

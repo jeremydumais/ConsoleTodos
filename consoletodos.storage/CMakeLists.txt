@@ -1,6 +1,8 @@
 set(PROJECT_NAME   "consoletodos.storage")
 
-add_library(${PROJECT_NAME} SHARED ${CMAKE_CURRENT_SOURCE_DIR}/src/todoStorage.c)
+add_library(${PROJECT_NAME} SHARED ${CMAKE_CURRENT_SOURCE_DIR}/src/todoStorage.c
+                                   ${CMAKE_CURRENT_SOURCE_DIR}/src/configStorage.c
+                                   ${CMAKE_CURRENT_SOURCE_DIR}/src/errStorage.c)
 if ("${CMAKE_C_COMPILER_ID}" STREQUAL "GNU") #gcc
   # https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html
   target_compile_options(${PROJECT_NAME}
