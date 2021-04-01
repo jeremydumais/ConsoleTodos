@@ -1,6 +1,8 @@
 #include "todoStorage.h"
 #include "configStorage.h"
 #include "errStorage.h"
+#include "json.h"
+#include "json_object.h"
 #include <errno.h>
 #include <linux/limits.h>
 #include <stdio.h>
@@ -60,8 +62,14 @@ int initializeStorage()
 int loadTodos(const char *filePath, todo **list, int *listLength) 
 {
     //TODO free old list if not NULL
-    //TODO open the todo file
 
+    //TODO open the todo file
+    struct json_object *item = json_object_new_object();
+    json_object_object_add(item, "test", json_object_new_string("valeur"));
+    const char *t = json_object_to_json_string_ext(item, JSON_C_TO_STRING_PRETTY);
+    printf("%s\n", t);
+    json_object_put(item);
+    item = NULL;
     *listLength = 0;
 
     if (*list == NULL) {
@@ -74,6 +82,8 @@ int loadTodos(const char *filePath, todo **list, int *listLength)
 
 /*int saveTodos(todo **list, int listLength) 
 {
+    (void)list;
+    (void)listLength;
     return 0;
 }*/
 

@@ -89,7 +89,8 @@ void freeCommandAdd(void **cmdAddArgs)
 {
     commandAddArgs **args = (commandAddArgs **)cmdAddArgs;
     free((*args)->title);
-    free(*args);
+    free((*args));
+    *args = NULL;
 }
 
 void printCommandAddHelp() 

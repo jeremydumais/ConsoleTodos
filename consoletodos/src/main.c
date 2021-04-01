@@ -24,18 +24,21 @@ int main()
     bool quit = false;
 
     while(!quit) {
-        char *command;
+        char *command = NULL;
         printf("> ");
         if (getStringValue(&command) == 0) {
             if (!analyzeCommand(command)) {
                 quit = true;
-                break;
             }
         }
         else {
             printError("Unable to read the command");
+            free(command);
+            command = NULL;
             return EXIT_FAILURE;
         }
+        free(command);
+        command = NULL;
     }
     return EXIT_SUCCESS;
 }
@@ -69,6 +72,7 @@ bool analyzeCommand(const char *command)
         printCommandHelp(cmd);
     }
     
+    freeCommand(cmd, &cmdArgs);
     return true;
 }
 
