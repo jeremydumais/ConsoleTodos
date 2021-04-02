@@ -19,7 +19,7 @@ int parseCommandLoad(int argc, char **argv, void **cmdLoadArgs)
     return E_SUCCESS;
 }
 
-int executeCommandLoad(void **cmdLoadArgs, void **list, int *listLength) 
+int executeCommandLoad(void **cmdLoadArgs, void **list, size_t *listLength) 
 {
     commandLoadArgs *args = *((commandLoadArgs **)cmdLoadArgs);
     int loadResult = loadTodos((args != NULL ? args->filePath : NULL), (todo **)list, listLength);

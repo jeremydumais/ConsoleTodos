@@ -12,8 +12,8 @@
 
 int main()
 {
-    todos = NULL;
-    todoCount = 0;
+    todo *todos = NULL;
+    size_t todoCount = 0;
 
     int initializeStorageResult = launchStorageInitialization();
     if (initializeStorageResult != E_TODOSTORAGE_SUCCESS) {
@@ -27,7 +27,7 @@ int main()
         char *command = NULL;
         printf("> ");
         if (getStringValue(&command) == 0) {
-            if (!analyzeCommand(command)) {
+            if (!analyzeCommand(command, (void **)&todos, &todoCount)) {
                 quit = true;
             }
         }
@@ -40,13 +40,18 @@ int main()
         free(command);
         command = NULL;
     }
+
+    for(size_t i = 0; i < todoCount; i++) {
+        free(todos[i].name);
+    }
+    free(todos);
     return EXIT_SUCCESS;
 }
 
-bool analyzeCommand(const char *command)
+bool analyzeCommand(const char *command, void **list, size_t *listLength)
 {
     char cmd[COMMANDSIZE];
-    void *cmdArgs;
+    void *cmdArgs = NULL;
     int parseResult = parseCommand(command, cmd, COMMANDSIZE, &cmdArgs);
     if (parseResult == E_SUCCESS) {
         if (strcmp(cmd, "quit") == 0) {
@@ -56,7 +61,7 @@ bool analyzeCommand(const char *command)
             showVersion();
         }
         else {
-            executeCommand(cmd, &cmdArgs, (void **)&todos, &todoCount);
+            executeCommand(cmd, &cmdArgs, list, listLength);
         }
     }
     else if (parseResult == E_INVALIDCMD) {

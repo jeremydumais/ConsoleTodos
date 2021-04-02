@@ -2,6 +2,7 @@
 #define COMMANDADD_H
 
 #include <stdbool.h>
+#include <stdlib.h>
 
 typedef struct {
     char *title;
@@ -9,7 +10,7 @@ typedef struct {
 } commandAddArgs;
 
 int parseCommandAdd(int argc, char **argv, void **cmdAddArgs);
-int executeCommandAdd(void **cmdAddArgs, void **list, int *listLength);
+int executeCommandAdd(void **cmdAddArgs, void **list, size_t *listLength);
 void freeCommandAdd(void **cmdAddArgs);
 void printCommandAddHelp();
 #endif

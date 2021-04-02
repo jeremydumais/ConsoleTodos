@@ -65,7 +65,7 @@ int parseCommandAdd(int argc, char **argv, void **cmdAddArgs)
     return E_SUCCESS;
 }
 
-int executeCommandAdd(void **cmdAddArgs, void **list, int *listLength) 
+int executeCommandAdd(void **cmdAddArgs, void **list, size_t *listLength) 
 {
     commandAddArgs *args = *((commandAddArgs **)cmdAddArgs);
     if (*list == NULL) {

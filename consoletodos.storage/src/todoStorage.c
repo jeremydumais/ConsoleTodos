@@ -59,24 +59,37 @@ int initializeStorage()
     return E_TODOSTORAGE_SUCCESS;
 }
 
-int loadTodos(const char *filePath, todo **list, int *listLength) 
+int loadTodos(const char *filePath, todo **list, size_t *listLength) 
 {
     //TODO free old list if not NULL
 
-    //TODO open the todo file
-    struct json_object *item = json_object_new_object();
-    json_object_object_add(item, "test", json_object_new_string("valeur"));
-    const char *t = json_object_to_json_string_ext(item, JSON_C_TO_STRING_PRETTY);
-    printf("%s\n", t);
-    json_object_put(item);
-    item = NULL;
-    *listLength = 0;
+    //If no file path was specified, use the one from the config file
+    if (filePath == NULL) {
+        filePath = todoFileName;
+    }
+    //Read the entire todo list file
+    FILE *todoFile = fopen(filePath, "r");
+    fseek(todoFile, 0, SEEK_END);
+    long todoFileSize = ftell(todoFile);
+    fseek(todoFile, 0, SEEK_SET);
 
-    if (*list == NULL) {
-        *list = malloc(sizeof(todo));
-        //(*list)[0].name = malloc(256);
-    }  
-    (*listLength)++;
+    char *fileContent = malloc(todoFileSize + 1);
+    fread(fileContent, 1, todoFileSize, todoFile);
+    fclose(todoFile);
+    fileContent[todoFileSize] = '\0';
+    //Parse the file content to a json_object struct
+    struct json_object *jsonObj = json_tokener_parse(fileContent);
+    *listLength = json_object_array_length(jsonObj);
+    *list = malloc(sizeof(todo) * (*listLength));
+    for(size_t i = 0; i < (*listLength); i++) {
+        (*list)[i].name = malloc(sizeof(char) * 128);
+        strcpy((*list)[i].name, json_object_get_string(json_object_object_get(json_object_array_get_idx(jsonObj, i), "name")));
+    }
+    //Free the json_object
+    json_object_put(jsonObj);
+    jsonObj = NULL;
+
+    free(fileContent);
     return E_TODOSTORAGE_SUCCESS;
 }
 
@@ -86,11 +99,6 @@ int loadTodos(const char *filePath, todo **list, int *listLength)
     (void)listLength;
     return 0;
 }*/
-
-const char *getStorageTodoFileName()
-{
-    return todoFileName;
-}
 
 bool directoryExist(const char *folderPath) 
 {

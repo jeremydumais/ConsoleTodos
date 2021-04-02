@@ -2,7 +2,7 @@
 #include "command.h"
 #include <stdio.h>
 
-int executeCommandHelp(void **args, void **list, int *listLength) 
+int executeCommandHelp(void **args, void **list, size_t *listLength) 
 {
     if (*args != NULL) {
         return E_INVALIDARGS;

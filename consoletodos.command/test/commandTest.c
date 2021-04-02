@@ -3,6 +3,8 @@
 #include "commandAdd.h"
 #include "unity.h"
 
+extern int getArgumentsFromString(const char* cmdStr, char ***argv); 
+
 void runCommandTests() 
 {
     RUN_TEST(parseCommand_WithNullCommandStr_ReturnInvalidArgs);
@@ -133,14 +135,14 @@ void isCommandAvailable_WithaddCommand_ReturnTrue()
 void getArgumentsFromString_WithaddWithoutArgs_ReturnOneArg() 
 {
     char **argv;
-    TEST_ASSERT_EQUAL_INT(1, _getArgumentsFromString("add", &argv));
+    TEST_ASSERT_EQUAL_INT(1, getArgumentsFromString("add", &argv));
     TEST_ASSERT_EQUAL_STRING("add", argv[0]);
 }
 
 void getArgumentsFromString_WithaddWithTParamWithoutValue_ReturnTwoArg() 
 {
     char **argv;
-    TEST_ASSERT_EQUAL_INT(2, _getArgumentsFromString("add -t", &argv));
+    TEST_ASSERT_EQUAL_INT(2, getArgumentsFromString("add -t", &argv));
     TEST_ASSERT_EQUAL_STRING("add", argv[0]);
     TEST_ASSERT_EQUAL_STRING("-t", argv[1]);
 }
@@ -148,7 +150,7 @@ void getArgumentsFromString_WithaddWithTParamWithoutValue_ReturnTwoArg()
 void getArgumentsFromString_WithaddWithTParamWithoutValueExtraSpaces_ReturnOneArg() 
 {
     char **argv;
-    TEST_ASSERT_EQUAL_INT(2, _getArgumentsFromString("   add      -t     ", &argv));
+    TEST_ASSERT_EQUAL_INT(2, getArgumentsFromString("   add      -t     ", &argv));
     TEST_ASSERT_EQUAL_STRING("add", argv[0]);
     TEST_ASSERT_EQUAL_STRING("-t", argv[1]);
 }
@@ -156,7 +158,7 @@ void getArgumentsFromString_WithaddWithTParamWithoutValueExtraSpaces_ReturnOneAr
 void getArgumentsFromString_WithaddWithTParamAndUnquotedValue_ReturnThreeArg() 
 {
     char **argv;
-    TEST_ASSERT_EQUAL_INT(3, _getArgumentsFromString("add -t title", &argv));
+    TEST_ASSERT_EQUAL_INT(3, getArgumentsFromString("add -t title", &argv));
     TEST_ASSERT_EQUAL_STRING("add", argv[0]);
     TEST_ASSERT_EQUAL_STRING("-t", argv[1]);
     TEST_ASSERT_EQUAL_STRING("title", argv[2]);
@@ -165,7 +167,7 @@ void getArgumentsFromString_WithaddWithTParamAndUnquotedValue_ReturnThreeArg()
 void getArgumentsFromString_WithaddWithTParamAndQuotedValue_ReturnThreeArg() 
 {
     char **argv;
-    TEST_ASSERT_EQUAL_INT(3, _getArgumentsFromString("add -t \"title test\"", &argv));
+    TEST_ASSERT_EQUAL_INT(3, getArgumentsFromString("add -t \"title test\"", &argv));
     TEST_ASSERT_EQUAL_STRING("add", argv[0]);
     TEST_ASSERT_EQUAL_STRING("-t", argv[1]);
     TEST_ASSERT_EQUAL_STRING("title test", argv[2]);
@@ -174,7 +176,7 @@ void getArgumentsFromString_WithaddWithTParamAndQuotedValue_ReturnThreeArg()
 void getArgumentsFromString_WithaddWithTitleParamAndQuotedValue_ReturnThreeArg() 
 {
     char **argv;
-    TEST_ASSERT_EQUAL_INT(3, _getArgumentsFromString("add --title \"title test\"", &argv));
+    TEST_ASSERT_EQUAL_INT(3, getArgumentsFromString("add --title \"title test\"", &argv));
     TEST_ASSERT_EQUAL_STRING("add", argv[0]);
     TEST_ASSERT_EQUAL_STRING("--title", argv[1]);
     TEST_ASSERT_EQUAL_STRING("title test", argv[2]);
@@ -183,7 +185,7 @@ void getArgumentsFromString_WithaddWithTitleParamAndQuotedValue_ReturnThreeArg()
 void getArgumentsFromString_WithaddWithTAndPParam_ReturnFiveArg() 
 {
     char **argv;
-    TEST_ASSERT_EQUAL_INT(5, _getArgumentsFromString("add -t test -p 3", &argv));
+    TEST_ASSERT_EQUAL_INT(5, getArgumentsFromString("add -t test -p 3", &argv));
     TEST_ASSERT_EQUAL_STRING("add", argv[0]);
     TEST_ASSERT_EQUAL_STRING("-t", argv[1]);
     TEST_ASSERT_EQUAL_STRING("test", argv[2]);

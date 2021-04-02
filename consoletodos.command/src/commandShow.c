@@ -50,7 +50,7 @@ int parseCommandShow(int argc, char **argv, void **cmdAddArgs)
     return 0;
 }
 
-int executeCommandShow(void **cmdAddArgs, void **list, int *listLength) 
+int executeCommandShow(void **cmdAddArgs, void **list, size_t *listLength) 
 {
     (void)cmdAddArgs; //Not used
     todo *todos = (todo *)(*list);

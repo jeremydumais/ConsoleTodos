@@ -6,9 +6,6 @@
 #include <stdio.h>
 #include <string.h>
 
-todo *todos;
-int todoCount;
-
 static commandDefinition commandDefinitions[COMMANDNB] = {
     {.name = "help", .parseCommand = NULL, .executeCommand = &executeCommandHelp, .printHelp = NULL, .freeCommandArgs = NULL},
     {.name = "quit", .parseCommand = NULL, .executeCommand = NULL, .printHelp = NULL, .freeCommandArgs = NULL},
@@ -16,6 +13,8 @@ static commandDefinition commandDefinitions[COMMANDNB] = {
     {.name = "add", .parseCommand = &parseCommandAdd, .executeCommand = &executeCommandAdd, .printHelp = &printCommandAddHelp, .freeCommandArgs = &freeCommandAdd},
     {.name = "show", .parseCommand = &parseCommandShow, .executeCommand = &executeCommandShow, .printHelp = &printCommandShowHelp, .freeCommandArgs = NULL},
     {.name = "load", .parseCommand = &parseCommandLoad, .executeCommand = &executeCommandLoad, .printHelp = NULL, .freeCommandArgs = &freeCommandLoad}};
+
+int getArgumentsFromString(const char* cmdStr, char ***argv);
 
 int launchStorageInitialization()
 {
@@ -51,7 +50,7 @@ int parseCommand(const char *cmdStr, char *cmd, size_t cmdLength, void **cmdArgs
 
     int parseResult = E_SUCCESS;
     char **argv = NULL;
-    int argc = _getArgumentsFromString(cmdStr, &argv);
+    int argc = getArgumentsFromString(cmdStr, &argv);
     for (int i = 0; i < COMMANDNB; i++) {
         if (strcmp(cmd, commandDefinitions[i].name) == 0) {
             if (commandDefinitions[i].parseCommand != NULL)
@@ -91,13 +90,13 @@ bool isCommandAvailable(const char *cmdStr)
     return false;
 }
 
-void executeCommand(const char *cmd, void **cmdArgs, void **list, int *listLength)
+void executeCommand(const char *cmd, void **cmdArgs, void **list, size_t *listLength)
 {
     for (int i = 0; i < COMMANDNB; i++)
     {
         if (strcmp(cmd, commandDefinitions[i].name) == 0)
         {
-            int (*executeFunction)(void **cmdAddArgs, void **list, int *listLength) = commandDefinitions[i].executeCommand;
+            int (*executeFunction)(void **cmdAddArgs, void **list, size_t *listLength) = commandDefinitions[i].executeCommand;
             if (executeFunction != NULL)
             {
                 (*commandDefinitions[i].executeCommand)(cmdArgs, list, listLength);
@@ -136,7 +135,7 @@ void printCommandHelp(const char *cmd)
     }
 }
 
-int _getArgumentsFromString(const char *cmdStr, char ***argv)
+int getArgumentsFromString(const char *cmdStr, char ***argv)
 {
     //https://stackoverflow.com/questions/9659697/parse-string-into-array-based-on-spaces-or-double-quotes-strings
     const char *p;
