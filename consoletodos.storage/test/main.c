@@ -1,5 +1,5 @@
 #include "unity.h"
-#include "commandTest.h"
+#include "todoStorageTest.h"
 
 void setUp(void) {
 }
@@ -9,6 +9,6 @@ void tearDown(void) {
 
 int main(void) {
     UNITY_BEGIN();
-    runCommandTests();
+    runTodoStorageTests();
     return UNITY_END();
 }

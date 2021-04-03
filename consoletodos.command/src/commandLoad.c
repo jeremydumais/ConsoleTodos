@@ -1,6 +1,7 @@
 #include "commandLoad.h"
 #include "command.h"
 #include "todoStorage.h"
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -24,6 +25,7 @@ int executeCommandLoad(void **cmdLoadArgs, void **list, size_t *listLength)
     commandLoadArgs *args = *((commandLoadArgs **)cmdLoadArgs);
     int loadResult = loadTodos((args != NULL ? args->filePath : NULL), (todo **)list, listLength);
     if (loadResult == E_TODOSTORAGE_SUCCESS) {
+        printf("%zu todo(s) loaded.\n", *listLength);
         return E_SUCCESS;
     }
     else {

@@ -42,8 +42,7 @@ int parseCommandAdd(int argc, char **argv, void **cmdAddArgs)
                 return E_DISPLAYHELP;
             break;
             case 't':
-            //TODO Check the title is not empty
-            title = optarg;
+                title = optarg;
             break;
             case 'p':
             break;
@@ -76,11 +75,12 @@ int executeCommandAdd(void **cmdAddArgs, void **list, size_t *listLength)
     }
 
     todo *todos = *((todo **)list);
-    size_t titleLength = strlen(args->title);
-    todos[*listLength].name = malloc(sizeof(char) * (titleLength + 1));
-    strcpy(todos[*listLength].name, args->title);
-    todos[*listLength].name[titleLength] = 0;
-    (*listLength)++;
+    if (createTodo(todos + (*listLength), args->title) == 0) {
+        (*listLength)++;
+    }
+    else {
+        //TODO Print error
+    }
 
     return E_SUCCESS;
 }

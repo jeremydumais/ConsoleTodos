@@ -41,10 +41,7 @@ int main()
         command = NULL;
     }
 
-    for(size_t i = 0; i < todoCount; i++) {
-        free(todos[i].name);
-    }
-    free(todos);
+    freeTodoList(&todos, &todoCount);
     return EXIT_SUCCESS;
 }
 

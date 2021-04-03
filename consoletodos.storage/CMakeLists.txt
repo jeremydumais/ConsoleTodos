@@ -4,7 +4,7 @@ add_library(${PROJECT_NAME} SHARED ${CMAKE_CURRENT_SOURCE_DIR}/src/todoStorage.c
                                    ${CMAKE_CURRENT_SOURCE_DIR}/src/configStorage.c
                                    ${CMAKE_CURRENT_SOURCE_DIR}/src/errStorage.c)
 
-target_link_libraries(${PROJECT_NAME} json-c)
+target_link_libraries(${PROJECT_NAME} consoletodos.model json-c)
 
 if ("${CMAKE_C_COMPILER_ID}" STREQUAL "GNU") #gcc
   # https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html
@@ -21,4 +21,4 @@ if ("${CMAKE_C_COMPILER_ID}" STREQUAL "GNU") #gcc
     )
 endif()
 
-#add_subdirectory(test)
+add_subdirectory(test)

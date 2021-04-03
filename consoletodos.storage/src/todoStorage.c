@@ -15,8 +15,10 @@ static char todoFileName[PATH_MAX + 1];
 static char configDirectory[PATH_MAX + 1];
 static char configFilePath[PATH_MAX + 1];
 
+void createTodosFromJSONString(const char *fileContent, todo **list, size_t *listLength);
 bool directoryExist(const char *folderPath);
 bool fileExist(const char *filePath);
+
 
 int initializeStorage() 
 {
@@ -61,14 +63,17 @@ int initializeStorage()
 
 int loadTodos(const char *filePath, todo **list, size_t *listLength) 
 {
-    //TODO free old list if not NULL
-
+    freeTodoList(list, listLength);
     //If no file path was specified, use the one from the config file
     if (filePath == NULL) {
         filePath = todoFileName;
     }
     //Read the entire todo list file
     FILE *todoFile = fopen(filePath, "r");
+    if (!todoFile) {
+        setError("Unable to open the todo file %s.\nInternal error: %s", filePath, strerror(errno));
+        return E_TODOSTORAGE_ERROR;
+    }
     fseek(todoFile, 0, SEEK_END);
     long todoFileSize = ftell(todoFile);
     fseek(todoFile, 0, SEEK_SET);
@@ -77,20 +82,42 @@ int loadTodos(const char *filePath, todo **list, size_t *listLength)
     fread(fileContent, 1, todoFileSize, todoFile);
     fclose(todoFile);
     fileContent[todoFileSize] = '\0';
-    //Parse the file content to a json_object struct
-    struct json_object *jsonObj = json_tokener_parse(fileContent);
-    *listLength = json_object_array_length(jsonObj);
-    *list = malloc(sizeof(todo) * (*listLength));
-    for(size_t i = 0; i < (*listLength); i++) {
-        (*list)[i].name = malloc(sizeof(char) * 128);
-        strcpy((*list)[i].name, json_object_get_string(json_object_object_get(json_object_array_get_idx(jsonObj, i), "name")));
-    }
-    //Free the json_object
-    json_object_put(jsonObj);
-    jsonObj = NULL;
+    createTodosFromJSONString(fileContent, list, listLength);
 
     free(fileContent);
     return E_TODOSTORAGE_SUCCESS;
+}
+
+void createTodosFromJSONString(const char *fileContent, todo **list, size_t *listLength)
+{
+    if (fileContent == NULL) {
+        return;
+    }
+    //Parse the file content to a json_object struct
+    struct json_object *jsonObj = json_tokener_parse(fileContent);
+    if (json_object_get_type(jsonObj) != json_type_array) {
+        return;
+    }
+    size_t fileTodosCount = json_object_array_length(jsonObj);
+    if (fileTodosCount == 0) {
+        return;
+    }
+    *list = malloc(sizeof(todo) * fileTodosCount);
+    for(size_t i = 0; i < fileTodosCount; i++) {
+        struct json_object *todoJSONObj = json_object_array_get_idx(jsonObj, i);
+        if (todoJSONObj != NULL) {
+            struct json_object *todoJSONObjNameField = json_object_object_get(todoJSONObj, "name");
+            if (todoJSONObjNameField == NULL) {
+                continue;
+            }
+            if (createTodo((*list) + i, json_object_get_string(todoJSONObjNameField)) == 0) {
+                (*listLength)++;
+            }
+        }
+    }
+    //Free the acquires ressources
+    json_object_put(jsonObj);
+    jsonObj = NULL;
 }
 
 /*int saveTodos(todo **list, int listLength) 

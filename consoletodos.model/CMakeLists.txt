@@ -17,4 +17,4 @@ if ("${CMAKE_C_COMPILER_ID}" STREQUAL "GNU") #gcc
     )
 endif()
 
-#add_subdirectory(test)
+add_subdirectory(test)
