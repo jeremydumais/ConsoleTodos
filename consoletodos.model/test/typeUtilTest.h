@@ -1,0 +1,13 @@
+#ifndef TYPEUTILTEST_H
+#define TYPEUTILTEST_H
+
+void runTypeUtilTests();
+void isStringEmptyOrWhiteSpace_WithNullValue_ReturnTrue();
+void isStringEmptyOrWhiteSpace_WithEmptyValue_ReturnTrue();
+void isStringEmptyOrWhiteSpace_WithOneWSValue_ReturnTrue();
+void isStringEmptyOrWhiteSpace_WithThreeWSValue_ReturnTrue();
+void isStringEmptyOrWhiteSpace_WithTestSurroundedByWSValue_ReturnFalse();
+void isStringEmptyOrWhiteSpace_WithTestAndWSValue_ReturnFalse();
+void isStringEmptyOrWhiteSpace_WithWSAndTestValue_ReturnFalse();
+
+#endif

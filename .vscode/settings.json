@@ -25,6 +25,8 @@
         "configstorage.h": "c",
         "errstorage.h": "c",
         "errno.h": "c",
-        "todo.h": "c"
+        "todo.h": "c",
+        "error.h": "c",
+        "commandutil.h": "c"
     }
 }

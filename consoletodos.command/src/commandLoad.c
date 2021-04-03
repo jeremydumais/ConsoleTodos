@@ -1,5 +1,6 @@
 #include "commandLoad.h"
 #include "command.h"
+#include "errStorage.h"
 #include "todoStorage.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -29,7 +30,7 @@ int executeCommandLoad(void **cmdLoadArgs, void **list, size_t *listLength)
         return E_SUCCESS;
     }
     else {
-        //TODO write corresponding error string
+        printError(getLastStorageError());
         return E_EXECUTIONERROR;
     }
 }
@@ -42,6 +43,3 @@ void freeCommandLoad(void **cmdLoadArgs)
     }
     free(*args);
 }
-
-
-//Not used

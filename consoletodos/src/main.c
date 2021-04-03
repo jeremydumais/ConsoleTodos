@@ -1,4 +1,4 @@
-#include "main.h"
+ #include "main.h"
 #include "command.h"
 #include "shellUtil.h"
 #include "errStorage.h"
@@ -74,15 +74,10 @@ bool analyzeCommand(const char *command, void **list, size_t *listLength)
         printCommandHelp(cmd);
     }
     
-    freeCommand(cmd, &cmdArgs);
+    if (cmdArgs != NULL) {
+        freeCommand(cmd, &cmdArgs);
+    }
     return true;
-}
-
-void printError(const char *error)
-{
-    printf("\033[1;31m"); 
-    printf("%s\n", error);
-    printf("\033[0m"); 
 }
 
 void showVersion()

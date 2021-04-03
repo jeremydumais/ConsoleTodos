@@ -79,7 +79,7 @@ int executeCommandAdd(void **cmdAddArgs, void **list, size_t *listLength)
         (*listLength)++;
     }
     else {
-        //TODO Print error
+        printError("Unable to create the todo");
     }
 
     return E_SUCCESS;

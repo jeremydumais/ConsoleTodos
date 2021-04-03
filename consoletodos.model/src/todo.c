@@ -1,4 +1,5 @@
 #include "todo.h"
+#include "typeUtil.h"
 #include <stddef.h>
 #include <stdlib.h>
 #include <string.h>
@@ -8,7 +9,7 @@ int createTodo(todo *todoItem, const char *name)
     todoItem->name = NULL;
     todoItem->description = NULL;
     todoItem->priority = 3;
-    if (name == NULL || strlen(name) == 0) {
+    if (isStringEmptyOrWhiteSpace(name)) {
         return -1;
     }
     size_t titleLength = strlen(name);
@@ -24,4 +25,5 @@ void freeTodoList(todo **list, size_t *listLength)
     }
     free((*list));
     (*list) = NULL;
+    (*listLength) = 0;
 }
