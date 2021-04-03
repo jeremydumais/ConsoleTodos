@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.16)
 project("consoletodos" LANGUAGES C)
 
+set(CMAKE_C_STANDARD 11)
+
 enable_testing()
 
 # Download and unpack dependencies at configure time

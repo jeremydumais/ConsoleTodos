@@ -3,8 +3,8 @@
 
 #include "commandAdd.h"
 #include "commandHelp.h"
-#include "commandShow.h"
 #include "commandLoad.h"
+#include "commandShow.h"
 #include "commandUtil.h"
 #include "todo.h"
 #include <stdbool.h>

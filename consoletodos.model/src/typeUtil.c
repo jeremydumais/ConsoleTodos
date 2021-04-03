@@ -14,7 +14,7 @@ bool isStringEmptyOrWhiteSpace(const char *value)
     }
     
     bool empty = true;
-    for(int i = 0; i < len; i++) {
+    for(size_t i = 0; i < len; i++) {
         if (!isspace(value[i])) {
             empty = false;
         }

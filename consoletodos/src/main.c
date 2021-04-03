@@ -1,10 +1,10 @@
  #include "main.h"
 #include "command.h"
-#include "shellUtil.h"
 #include "errStorage.h"
+#include "shellUtil.h"
 #include "todoStorage.h"
-#include <stdio.h>
 #include <stdbool.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -25,7 +25,7 @@ int main()
 
     while(!quit) {
         char *command = NULL;
-        printf("> ");
+        //printf("> ");
         if (getStringValue(&command) == 0) {
             if (!analyzeCommand(command, (void **)&todos, &todoCount)) {
                 quit = true;
@@ -54,7 +54,8 @@ bool analyzeCommand(const char *command, void **list, size_t *listLength)
         if (strcmp(cmd, "quit") == 0) {
             return false;
         }
-        else if (strcmp(cmd, "version") == 0) {
+        
+        if (strcmp(cmd, "version") == 0) {
             showVersion();
         }
         else {

@@ -4,10 +4,11 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define CONFIGFILELINEMAX PATH_MAX+129
+#define CONFIGFILELINEMAX (PATH_MAX+129)
+#define CONFIGFIELDMAX 128
 
 typedef struct {
-    char name[128];
+    char name[CONFIGFIELDMAX];
     char value[PATH_MAX + 1];
 } configFileEntry;
 
@@ -29,23 +30,28 @@ int openConfigFile(const char *fileName)
             if (line[0] == '#') {
                 continue;
             }
-            else {
-                if (configEntries == NULL) {
-                    configEntries = malloc(sizeof(configFileEntry) * 4);
-                    configEntriesAllocatedLength = 4;
-                }
-                else if (configEntriesLength + 1 == configEntriesAllocatedLength) {
-                    //Reallocate 4 more entries
-                    configEntriesAllocatedLength += 4;
-                    configEntries = realloc(configEntries, sizeof(configFileEntry) * configEntriesAllocatedLength);
-                }
-
-                if (sscanf(line, "%s = %s", configEntries[configEntriesLength].name, configEntries[configEntriesLength].value) == 2) {
-                    configEntriesLength++;
+            if (configEntries == NULL) {
+                configEntries = malloc(sizeof(configFileEntry) * 4);
+                configEntriesAllocatedLength = 4;
+            }
+            else if (configEntriesLength + 1 == configEntriesAllocatedLength) {
+                //Reallocate 4 more entries
+                configEntriesAllocatedLength += 4;
+                configFileEntry *reallocatedEntries = realloc(configEntries, sizeof(configFileEntry) * configEntriesAllocatedLength);
+                if (reallocatedEntries == NULL) {
+                    printf("Not enough memory to allocate 4 more config entries.");
+                    abort();
                 }
                 else {
-                    continue;
+                    configEntries = reallocatedEntries;
                 }
+            }
+
+            if (sscanf(line, "%s = %s", configEntries[configEntriesLength].name, configEntries[configEntriesLength].value) == 2) {
+                configEntriesLength++;
+            }
+            else {
+                continue;
             }
         }
     }
@@ -66,14 +72,13 @@ int readConfigFileStringValue(const char *item, char *value, size_t valueLength)
 
 int closeConfigFile() 
 {
-    if (fclose(configFileFD) == 0) {
-        return E_CONFIGSTORAGE_SUCCESS;
-    }
-    else {
-        return E_CONFIGSTORAGE_UNABLECLOSEFILE;
+    int retVal = E_CONFIGSTORAGE_SUCCESS;
+    if (fclose(configFileFD) != 0) {
+        retVal = E_CONFIGSTORAGE_UNABLECLOSEFILE;
     }
     free(configEntries);
     configEntries = NULL;
     configEntriesLength = 0;
     configEntriesAllocatedLength = 0;
+    return retVal;
 }

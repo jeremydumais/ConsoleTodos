@@ -3,7 +3,7 @@
 #include <stdarg.h>
 #include <stdio.h>
 
-#define STORAGEERRORMSG_MAXLEN PATH_MAX + 1024
+#define STORAGEERRORMSG_MAXLEN (PATH_MAX + 1024)
 
 char lastError[STORAGEERRORMSG_MAXLEN];
 

@@ -11,6 +11,7 @@
 #include <sys/stat.h>
 #include <unistd.h>
 
+#define DEFAULTCONFIGFILEMAXSIZE (PATH_MAX + 1024)
 static char todoFileName[PATH_MAX + 1];
 static char configDirectory[PATH_MAX + 1];
 static char configFilePath[PATH_MAX + 1];
@@ -152,7 +153,7 @@ int createNewConfigFile(const char *filePath, const char *configDirectory)
         return E_TODOSTORAGE_ERROR;
     }
     //Write the default config file
-    char fileContent[PATH_MAX + 1024];
+    char fileContent[DEFAULTCONFIGFILEMAXSIZE];
     sprintf(fileContent, "# Console todos config file\n\n\
 todosFilePath = %s/todos.json\n", configDirectory);
     if (fputs(fileContent, configFile) < 0) {

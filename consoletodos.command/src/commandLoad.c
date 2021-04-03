@@ -8,13 +8,6 @@
 
 int parseCommandLoad(int argc, char **argv, void **cmdLoadArgs) 
 {
-    /*
-    *cmdLoadArgs = malloc(sizeof(commandLoadArgs));
-    commandLoadArgs *args = *((commandLoadArgs **)cmdLoadArgs);
-    const char *storageTodoFileName = getStorageTodoFileName();
-    int todoFileNameLength = strlen(storageTodoFileName);
-    args->filePath = malloc(sizeof(char) * (todoFileNameLength + 1));
-    strcpy(args->filePath, storageTodoFileName);*/
     (void)argc; //Not used
     (void)argv; //Not used
     *cmdLoadArgs = NULL;
@@ -25,14 +18,13 @@ int executeCommandLoad(void **cmdLoadArgs, void **list, size_t *listLength)
 {
     commandLoadArgs *args = *((commandLoadArgs **)cmdLoadArgs);
     int loadResult = loadTodos((args != NULL ? args->filePath : NULL), (todo **)list, listLength);
-    if (loadResult == E_TODOSTORAGE_SUCCESS) {
-        printf("%zu todo(s) loaded.\n", *listLength);
-        return E_SUCCESS;
-    }
-    else {
+    if (loadResult != E_TODOSTORAGE_SUCCESS) {
         printError(getLastStorageError());
         return E_EXECUTIONERROR;
     }
+    
+    printf("%zu todo(s) loaded.\n", *listLength);
+    return E_SUCCESS;
 }
 
 void freeCommandLoad(void **cmdLoadArgs) 

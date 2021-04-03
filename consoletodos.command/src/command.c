@@ -2,8 +2,8 @@
 #include "command.h"
 #include "todoStorage.h"
 #include <ctype.h>
-#include <stdlib.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
 static commandDefinition commandDefinitions[COMMANDNB] = {
@@ -128,8 +128,9 @@ void printCommandHelp(const char *cmd)
         if (strcmp(cmd, commandDefinitions[i].name) == 0)
         {
             void (*helpFunction)() = commandDefinitions[i].printHelp;
-            if (helpFunction != NULL)
+            if (helpFunction != NULL) {
                 (*helpFunction)();
+            }
             break;
         }
     }
@@ -138,9 +139,9 @@ void printCommandHelp(const char *cmd)
 int getArgumentsFromString(const char *cmdStr, char ***argv)
 {
     //https://stackoverflow.com/questions/9659697/parse-string-into-array-based-on-spaces-or-double-quotes-strings
-    const char *p;
+    const char *p = NULL;
     const char *startOfWord = NULL;
-    int c;
+    int c = 0;
     int i = 0;
     int itemFound = 0;
     enum states
@@ -232,6 +233,8 @@ int getArgumentsFromString(const char *cmdStr, char ***argv)
                 i++;
             }
             continue; /* either still IN_WORD or we handled the end above */
+        default:
+            continue;
         }
     }
     return itemFound;

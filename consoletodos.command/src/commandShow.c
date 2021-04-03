@@ -1,9 +1,9 @@
 #include "commandShow.h"
 #include "command.h"
 #include "todo.h"
+#include <getopt.h>
 #include <stddef.h>
 #include <stdio.h>
-#include <getopt.h>
 
 static struct option long_options_show[] =
 {
@@ -36,7 +36,7 @@ int parseCommandShow(int argc, char **argv, void **cmdAddArgs)
                 return E_DISPLAYHELP;
             break;
             case 't':
-            //TODO Check the top value
+            //TODO(task) Check the top value
             break;
             default:
                 return E_INVALIDARGS;
@@ -56,17 +56,17 @@ int executeCommandShow(void **cmdAddArgs, void **list, size_t *listLength)
     todo *todos = (todo *)(*list);
 
     //Print todo header
-    for(int i = 0; i < (*listLength); i++) {
+    for(size_t i = 0; i < (*listLength); i++) {
         printf("%s\n", todos[i].name);
     }
-    printf("    %d todo(s) in your list\n", *listLength);
+    printf("    %zu todo(s) in your list\n", *listLength);
     return E_SUCCESS;
 }
 
 void freeCommandShow(void **cmdAddArgs) 
 {
     (void)cmdAddArgs; //Not used
-    //TODO Implement the free for that resource
+    //TODO(task) Implement the free for that resource
 }
 
 void printCommandShowHelp() 
