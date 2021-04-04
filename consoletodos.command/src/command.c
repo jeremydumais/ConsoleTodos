@@ -12,7 +12,8 @@ static commandDefinition commandDefinitions[COMMANDNB] = {
     {.name = "version", .parseCommand = NULL, .executeCommand = NULL, .printHelp = NULL, .freeCommandArgs = NULL},
     {.name = "add", .parseCommand = &parseCommandAdd, .executeCommand = &executeCommandAdd, .printHelp = &printCommandAddHelp, .freeCommandArgs = &freeCommandAdd},
     {.name = "show", .parseCommand = &parseCommandShow, .executeCommand = &executeCommandShow, .printHelp = &printCommandShowHelp, .freeCommandArgs = NULL},
-    {.name = "load", .parseCommand = &parseCommandLoad, .executeCommand = &executeCommandLoad, .printHelp = NULL, .freeCommandArgs = &freeCommandLoad}};
+    {.name = "load", .parseCommand = &parseCommandLoad, .executeCommand = &executeCommandLoad, .printHelp = NULL, .freeCommandArgs = &freeCommandLoad},
+    {.name = "save", .parseCommand = &parseCommandSave, .executeCommand = &executeCommandSave, .printHelp = NULL, .freeCommandArgs = &freeCommandSave}};
 
 int getArgumentsFromString(const char* cmdStr, char ***argv);
 

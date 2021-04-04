@@ -3,8 +3,6 @@
 #include "errStorage.h"
 #include "todoStorage.h"
 #include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 
 int parseCommandLoad(int argc, char **argv, void **cmdLoadArgs) 
 {

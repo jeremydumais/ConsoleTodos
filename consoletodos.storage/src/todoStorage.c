@@ -17,6 +17,7 @@ static char configDirectory[PATH_MAX + 1];
 static char configFilePath[PATH_MAX + 1];
 
 void createTodosFromJSONString(const char *fileContent, todo **list, size_t *listLength);
+char *createJSONStringFromTodos(const todo *list, size_t listLength);
 bool directoryExist(const char *folderPath);
 bool fileExist(const char *filePath);
 
@@ -80,7 +81,7 @@ int loadTodos(const char *filePath, todo **list, size_t *listLength)
     fseek(todoFile, 0, SEEK_SET);
 
     char *fileContent = malloc(todoFileSize + 1);
-    fread(fileContent, 1, todoFileSize, todoFile);
+    fread(fileContent, sizeof(char), todoFileSize, todoFile);
     fclose(todoFile);
     fileContent[todoFileSize] = '\0';
     createTodosFromJSONString(fileContent, list, listLength);
@@ -97,10 +98,12 @@ void createTodosFromJSONString(const char *fileContent, todo **list, size_t *lis
     //Parse the file content to a json_object struct
     struct json_object *jsonObj = json_tokener_parse(fileContent);
     if (json_object_get_type(jsonObj) != json_type_array) {
+        json_object_put(jsonObj);
         return;
     }
     size_t fileTodosCount = json_object_array_length(jsonObj);
     if (fileTodosCount == 0) {
+        json_object_put(jsonObj);
         return;
     }
     *list = malloc(sizeof(todo) * fileTodosCount);
@@ -121,12 +124,47 @@ void createTodosFromJSONString(const char *fileContent, todo **list, size_t *lis
     jsonObj = NULL;
 }
 
-/*int saveTodos(todo **list, int listLength) 
+int saveTodos(const char *filePath, const todo *list, size_t listLength) 
 {
-    (void)list;
-    (void)listLength;
-    return 0;
-}*/
+    //If no file path was specified, use the one from the config file
+    if (filePath == NULL) {
+        filePath = todoFileName;
+    }
+    //Read the entire todo list file
+    FILE *todoFile = fopen(filePath, "w");
+    if (!todoFile) {
+        setError("Unable to open the todo file %s for writing.\nInternal error: %s", filePath, strerror(errno));
+        return E_TODOSTORAGE_ERROR;
+    }
+    
+    int retVal = E_TODOSTORAGE_SUCCESS;
+    char *jsonStringToSave = createJSONStringFromTodos(list, listLength);
+    size_t jsonStringToSaveLen = strlen(jsonStringToSave);
+    if (fwrite(jsonStringToSave, sizeof(char), strlen(jsonStringToSave), todoFile) != jsonStringToSaveLen) {
+        setError("Unable to write all the bytes on the the todo file %s.\nInternal error: %s", filePath, strerror(errno));
+        retVal = E_TODOSTORAGE_ERROR;
+    }
+    fclose(todoFile);
+    free(jsonStringToSave);
+    return retVal;
+}
+
+char *createJSONStringFromTodos(const todo *list, size_t listLength)
+{
+    struct json_object *jsonObj = json_object_new_array();
+    if (list != NULL) {
+        for(size_t i = 0; i < listLength; i++) {
+            struct json_object *todoJSONItem = json_object_new_object();
+            json_object_object_add(todoJSONItem, "name", json_object_new_string(list[i].name));
+            json_object_array_add(jsonObj, todoJSONItem);
+        }
+    }
+    const char *jsonString = json_object_to_json_string(jsonObj);
+    char *retVal = malloc(sizeof(char) * (strlen(jsonString) + 1));
+    strcpy(retVal, jsonString);
+    json_object_put(jsonObj);
+    return retVal;
+}
 
 bool directoryExist(const char *folderPath) 
 {

@@ -29,6 +29,7 @@
         "error.h": "c",
         "commandutil.h": "c",
         "time.h": "c",
-        "shellutil.h": "c"
+        "shellutil.h": "c",
+        "commandsave.h": "c"
     }
 }

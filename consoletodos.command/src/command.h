@@ -4,13 +4,14 @@
 #include "commandAdd.h"
 #include "commandHelp.h"
 #include "commandLoad.h"
+#include "commandSave.h"
 #include "commandShow.h"
 #include "commandUtil.h"
 #include "todo.h"
 #include <stdbool.h>
 #include <stddef.h>
 
-#define COMMANDNB 6
+#define COMMANDNB 7
 
 typedef struct {
     char *name;

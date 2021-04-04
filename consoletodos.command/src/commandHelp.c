@@ -13,7 +13,8 @@ int executeCommandHelp(void **args, void **list, size_t *listLength)
     printf("Available commands\n");
     printf("  add       Add a new todo\n");   
     printf("  show      Print the todo list\n");   
-    printf("  load      Reload the list of todos\n");
+    printf("  load      Load the list of todos\n");
+    printf("  save      Save the list of todos\n");
     printf("  help      Display the help (*You are here)\n");
     printf("  version   Display the version of the application\n");
     printf("  quit      Quit the application\n");   

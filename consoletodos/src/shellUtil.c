@@ -11,9 +11,7 @@ int getStringValue(char **value)
         add_history((*value));
         return 0;
     }
-    else {
-        return -1;
-    }
+    return -1;
 }
 
 int getIntValue(int *value)
@@ -28,7 +26,5 @@ int getIntValue(int *value)
         }
         return 0;
     }
-    else {
-        return -1;
-    }
+    return -1;
 }
