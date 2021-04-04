@@ -7,6 +7,7 @@
 #define DESCRSIZE 512
 
 typedef struct {
+    unsigned int runtimeId;
     char *name;
     char *description;
     time_t datetime;
@@ -18,9 +19,18 @@ typedef struct {
  * once it's not needed anymore.
  * 
  * @param name the name (title) of the todo
- * @return On success return 0, otherwise return -1;
+ * @return On success return 0, otherwise return -1
  */
 int createTodo(todo *todoItem, const char *name);
+
+/**
+ * @brief Update and existing todo item. 
+ * 
+ * @param todoItem 
+ * @param name the new name (title) of the todo
+ * @return On success return 0, otherwise return -1
+ */
+int updateTodo(todo *todoItem, const char *name);
 
 /**
  * @brief Free a todo allocated object.

@@ -57,7 +57,7 @@ int executeCommandShow(void **cmdAddArgs, void **list, size_t *listLength)
 
     //Print todo header
     for(size_t i = 0; i < (*listLength); i++) {
-        printf("%s\n", todos[i].name);
+        printf("(%d) %s\n",todos[i].runtimeId, todos[i].name);
     }
     printf("    %zu todo(s) in your list\n", *listLength);
     return E_SUCCESS;

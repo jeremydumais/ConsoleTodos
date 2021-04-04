@@ -11,6 +11,7 @@ static commandDefinition commandDefinitions[COMMANDNB] = {
     {.name = "quit", .parseCommand = NULL, .executeCommand = NULL, .printHelp = NULL, .freeCommandArgs = NULL},
     {.name = "version", .parseCommand = NULL, .executeCommand = NULL, .printHelp = NULL, .freeCommandArgs = NULL},
     {.name = "add", .parseCommand = &parseCommandAdd, .executeCommand = &executeCommandAdd, .printHelp = &printCommandAddHelp, .freeCommandArgs = &freeCommandAdd},
+    {.name = "update", .parseCommand = &parseCommandUpdate, .executeCommand = &executeCommandUpdate, .printHelp = &printCommandUpdateHelp, .freeCommandArgs = &freeCommandUpdate},
     {.name = "show", .parseCommand = &parseCommandShow, .executeCommand = &executeCommandShow, .printHelp = &printCommandShowHelp, .freeCommandArgs = NULL},
     {.name = "load", .parseCommand = &parseCommandLoad, .executeCommand = &executeCommandLoad, .printHelp = NULL, .freeCommandArgs = &freeCommandLoad},
     {.name = "save", .parseCommand = &parseCommandSave, .executeCommand = &executeCommandSave, .printHelp = NULL, .freeCommandArgs = &freeCommandSave}};
@@ -77,8 +78,7 @@ int parseCommand(const char *cmdStr, char *cmd, size_t cmdLength, void **cmdArgs
 
 bool isCommandAvailable(const char *cmdStr)
 {
-    if (cmdStr == NULL)
-    {
+    if (cmdStr == NULL) {
         return false;
     }
     for (int i = 0; i < COMMANDNB; i++)

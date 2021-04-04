@@ -30,6 +30,7 @@
         "commandutil.h": "c",
         "time.h": "c",
         "shellutil.h": "c",
-        "commandsave.h": "c"
+        "commandsave.h": "c",
+        "stdarg.h": "c"
     }
 }

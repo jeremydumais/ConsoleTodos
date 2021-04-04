@@ -6,12 +6,13 @@
 #include "commandLoad.h"
 #include "commandSave.h"
 #include "commandShow.h"
+#include "commandUpdate.h"
 #include "commandUtil.h"
 #include "todo.h"
 #include <stdbool.h>
 #include <stddef.h>
 
-#define COMMANDNB 7
+#define COMMANDNB 8
 
 typedef struct {
     char *name;

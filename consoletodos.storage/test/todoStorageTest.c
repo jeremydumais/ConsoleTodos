@@ -2,6 +2,7 @@
 #include "todo.h"
 #include "unity.h"
 #include <stdlib.h>
+#include <string.h>
 
 extern void createTodosFromJSONString(const char *fileContent, todo **list, size_t *listLength);
 extern char *createJSONStringFromTodos(const todo *list, size_t listLength);

@@ -56,10 +56,9 @@ int parseCommandAdd(int argc, char **argv, void **cmdAddArgs)
     }
     *cmdAddArgs = malloc(sizeof(commandAddArgs));
     commandAddArgs *args = *((commandAddArgs **)cmdAddArgs);
-    int titleLength = strlen(title);
+    size_t titleLength = strlen(title);
     args->title = malloc(sizeof(char) * (titleLength + 1));
-    strncpy(args->title, title, titleLength);
-    args->title[titleLength] = '\0';
+    strcpy(args->title, title);
     args->priority = priority;
     return E_SUCCESS;
 }

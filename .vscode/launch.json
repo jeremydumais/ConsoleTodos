@@ -41,6 +41,46 @@
                     "ignoreFailures": true
                 }
             ]
+        },
+        {
+            "name": "B&L Model.Test",
+            "preLaunchTask": "build all",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/consoletodos.model/test/consoletodos.model.test",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}/build",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ]
+        },
+        {
+            "name": "B&L Storage.Test",
+            "preLaunchTask": "build all",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/consoletodos.storage/test/consoletodos.storage.test",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}/build",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ]
         }
     ]
 }
