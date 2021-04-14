@@ -92,16 +92,16 @@ bool isCommandAvailable(const char *cmdStr)
     return false;
 }
 
-void executeCommand(const char *cmd, void **cmdArgs, void **list, size_t *listLength)
+void executeCommand(const char *cmd, void **cmdArgs, todoList *todos)
 {
     for (int i = 0; i < COMMANDNB; i++)
     {
         if (strcmp(cmd, commandDefinitions[i].name) == 0)
         {
-            int (*executeFunction)(void **cmdAddArgs, void **list, size_t *listLength) = commandDefinitions[i].executeCommand;
+            int (*executeFunction)(void **cmdAddArgs, todoList *todos) = commandDefinitions[i].executeCommand;
             if (executeFunction != NULL)
             {
-                (*commandDefinitions[i].executeCommand)(cmdArgs, list, listLength);
+                (*commandDefinitions[i].executeCommand)(cmdArgs, todos);
             }
             break;
         }

@@ -1,14 +1,14 @@
 #include "todoList.h"
 #include <stdlib.h>
 
-void freeTodoList(todo **list, size_t *listLength) 
+void freeTodoList(todoList *todos) 
 {
-    for(size_t i = 0; i < (*listLength); i++) {
-        free((*list)[i].name);
+    for(size_t i = 0; i < todos->length; i++) {
+        free(todos->list[i].name);
     }
-    free((*list));
-    (*list) = NULL;
-    (*listLength) = 0;
+    free(todos->list);
+    todos->list = NULL;
+    todos->length = 0;
 
-    lastAssignedRuntimeId = 0;
+    todos->lastRuntimeId = 0;
 }

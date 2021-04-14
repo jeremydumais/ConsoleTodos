@@ -4,9 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-unsigned int lastAssignedRuntimeId = 0;
-
-int createTodo(todo *todoItem, const char *name)
+int createTodo(todo *todoItem, const char *name, unsigned int *lastAssignedRuntimeId)
 {
     if (todoItem == NULL || isStringEmptyOrWhiteSpace(name)) {
         return -1;
@@ -20,7 +18,7 @@ int createTodo(todo *todoItem, const char *name)
     todoItem->name = malloc(sizeof(char) * (titleLength + 1));
     strcpy(todoItem->name, name);
     //Assign a runtime id 
-    todoItem->runtimeId = ++lastAssignedRuntimeId;
+    todoItem->runtimeId = ++(*lastAssignedRuntimeId);
     return 0;
 }
 

@@ -12,8 +12,10 @@
 
 int main()
 {
-    todo *todos = NULL;
-    size_t todoCount = 0;
+    todoList todos;
+    todos.list = NULL;
+    todos.length = 0;
+    todos.lastRuntimeId = 0;
 
     int initializeStorageResult = launchStorageInitialization();
     if (initializeStorageResult != E_TODOSTORAGE_SUCCESS) {
@@ -27,7 +29,7 @@ int main()
         char *command = NULL;
         //printf("> ");
         if (getStringValue(&command) == 0) {
-            if (!analyzeCommand(command, (void **)&todos, &todoCount)) {
+            if (!analyzeCommand(command, &todos)) {
                 quit = true;
             }
         }
@@ -41,11 +43,11 @@ int main()
         command = NULL;
     }
 
-    freeTodoList(&todos, &todoCount);
+    freeTodoList(&todos);
     return EXIT_SUCCESS;
 }
 
-bool analyzeCommand(const char *command, void **list, size_t *listLength)
+bool analyzeCommand(const char *command, todoList *todos)
 {
     char cmd[COMMANDSIZE];
     void *cmdArgs = NULL;
@@ -59,7 +61,7 @@ bool analyzeCommand(const char *command, void **list, size_t *listLength)
             showVersion();
         }
         else {
-            executeCommand(cmd, &cmdArgs, list, listLength);
+            executeCommand(cmd, &cmdArgs, todos);
         }
     }
     else if (parseResult == E_INVALIDCMD) {

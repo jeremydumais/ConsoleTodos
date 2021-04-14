@@ -14,8 +14,6 @@ typedef struct {
     int priority;
 } todo;
 
-extern unsigned int lastAssignedRuntimeId;
-
 /**
  * @brief Create a new todo object. The caller is responsible to free the object
  * once it's not needed anymore.
@@ -23,7 +21,7 @@ extern unsigned int lastAssignedRuntimeId;
  * @param name the name (title) of the todo
  * @return On success return 0, otherwise return -1
  */
-int createTodo(todo *todoItem, const char *name);
+int createTodo(todo *todoItem, const char *name, unsigned int *lastAssignedRuntimeId);
 
 /**
  * @brief Update and existing todo item. 

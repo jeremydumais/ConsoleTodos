@@ -1,6 +1,7 @@
 #ifndef COMMANDADD_H
 #define COMMANDADD_H
 
+#include "todoList.h"
 #include <stdbool.h>
 #include <stdlib.h>
 
@@ -10,7 +11,7 @@ typedef struct {
 } commandAddArgs;
 
 int parseCommandAdd(int argc, char **argv, void **cmdAddArgs);
-int executeCommandAdd(void **cmdAddArgs, void **list, size_t *listLength);
+int executeCommandAdd(void **cmdAddArgs, todoList *todos);
 void freeCommandAdd(void **cmdAddArgs);
 void printCommandAddHelp();
 #endif

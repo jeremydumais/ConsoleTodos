@@ -50,16 +50,15 @@ int parseCommandShow(int argc, char **argv, void **cmdAddArgs)
     return 0;
 }
 
-int executeCommandShow(void **cmdAddArgs, void **list, size_t *listLength) 
+int executeCommandShow(void **cmdAddArgs, todoList *todos) 
 {
     (void)cmdAddArgs; //Not used
-    todo *todos = (todo *)(*list);
 
     //Print todo header
-    for(size_t i = 0; i < (*listLength); i++) {
-        printf("(%d) %s\n",todos[i].runtimeId, todos[i].name);
+    for(size_t i = 0; i < todos->length; i++) {
+        printf("(%d) %s\n",todos->list[i].runtimeId, todos->list[i].name);
     }
-    printf("    %zu todo(s) in your list\n", *listLength);
+    printf("    %zu todo(s) in your list\n", todos->length);
     return E_SUCCESS;
 }
 

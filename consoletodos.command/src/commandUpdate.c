@@ -86,15 +86,14 @@ int parseCommandUpdate(int argc, char **argv, void **cmdUpdateArgs)
     return E_SUCCESS;
 }
 
-int executeCommandUpdate(void **cmdUpdateArgs, void **list, size_t *listLength) 
+int executeCommandUpdate(void **cmdUpdateArgs, todoList *todos) 
 {
     commandUpdateArgs *args = *((commandUpdateArgs **)cmdUpdateArgs);
-    todo *todos = *((todo **)list);
     todo *todoToUpdate = NULL;
     //Find the todo to update
-    for(size_t i = 0; i < (*listLength); i++) {
-        if (todos[i].runtimeId == args->runtimeId) {
-            todoToUpdate = todos + i;
+    for(size_t i = 0; i < todos->length; i++) {
+        if (todos->list[i].runtimeId == args->runtimeId) {
+            todoToUpdate = todos->list + i;
             break;
         }
     }

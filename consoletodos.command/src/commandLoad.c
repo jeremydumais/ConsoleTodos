@@ -12,16 +12,16 @@ int parseCommandLoad(int argc, char **argv, void **cmdLoadArgs)
     return E_SUCCESS;
 }
 
-int executeCommandLoad(void **cmdLoadArgs, void **list, size_t *listLength) 
+int executeCommandLoad(void **cmdLoadArgs, todoList *todos) 
 {
     commandLoadArgs *args = *((commandLoadArgs **)cmdLoadArgs);
-    int loadResult = loadTodos((args != NULL ? args->filePath : NULL), (todo **)list, listLength);
+    int loadResult = loadTodos((args != NULL ? args->filePath : NULL), todos);
     if (loadResult != E_TODOSTORAGE_SUCCESS) {
         printError(getLastStorageError());
         return E_EXECUTIONERROR;
     }
     
-    printf("%zu todo(s) loaded.\n", *listLength);
+    printf("%zu todo(s) loaded.\n", todos->length);
     return E_SUCCESS;
 }
 

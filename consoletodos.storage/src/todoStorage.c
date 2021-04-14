@@ -16,8 +16,8 @@ static char todoFileName[PATH_MAX + 1];
 static char configDirectory[PATH_MAX + 1];
 static char configFilePath[PATH_MAX + 1];
 
-void createTodosFromJSONString(const char *fileContent, todo **list, size_t *listLength);
-char *createJSONStringFromTodos(const todo *list, size_t listLength);
+void createTodosFromJSONString(const char *fileContent, todoList *todos);
+char *createJSONStringFromTodos(const todoList *todos);
 bool directoryExist(const char *folderPath);
 bool fileExist(const char *filePath);
 
@@ -63,9 +63,9 @@ int initializeStorage()
     return E_TODOSTORAGE_SUCCESS;
 }
 
-int loadTodos(const char *filePath, todo **list, size_t *listLength) 
+int loadTodos(const char *filePath, todoList *todos) 
 {
-    freeTodoList(list, listLength);
+    freeTodoList(todos);
     //If no file path was specified, use the one from the config file
     if (filePath == NULL) {
         filePath = todoFileName;
@@ -84,13 +84,13 @@ int loadTodos(const char *filePath, todo **list, size_t *listLength)
     fread(fileContent, sizeof(char), todoFileSize, todoFile);
     fclose(todoFile);
     fileContent[todoFileSize] = '\0';
-    createTodosFromJSONString(fileContent, list, listLength);
+    createTodosFromJSONString(fileContent, todos);
 
     free(fileContent);
     return E_TODOSTORAGE_SUCCESS;
 }
 
-void createTodosFromJSONString(const char *fileContent, todo **list, size_t *listLength)
+void createTodosFromJSONString(const char *fileContent, todoList *todos)
 {
     if (fileContent == NULL) {
         return;
@@ -106,7 +106,7 @@ void createTodosFromJSONString(const char *fileContent, todo **list, size_t *lis
         json_object_put(jsonObj);
         return;
     }
-    *list = malloc(sizeof(todo) * fileTodosCount);
+    todos->list = malloc(sizeof(todo) * fileTodosCount);
     for(size_t i = 0; i < fileTodosCount; i++) {
         struct json_object *todoJSONObj = json_object_array_get_idx(jsonObj, i);
         if (todoJSONObj != NULL) {
@@ -114,8 +114,8 @@ void createTodosFromJSONString(const char *fileContent, todo **list, size_t *lis
             if (todoJSONObjNameField == NULL) {
                 continue;
             }
-            if (createTodo((*list) + i, json_object_get_string(todoJSONObjNameField)) == 0) {
-                (*listLength)++;
+            if (createTodo(todos->list + i, json_object_get_string(todoJSONObjNameField), &todos->lastRuntimeId) == 0) {
+                todos->length++;
             }
         }
     }
@@ -124,7 +124,7 @@ void createTodosFromJSONString(const char *fileContent, todo **list, size_t *lis
     jsonObj = NULL;
 }
 
-int saveTodos(const char *filePath, const todo *list, size_t listLength) 
+int saveTodos(const char *filePath, const todoList *todos) 
 {
     //If no file path was specified, use the one from the config file
     if (filePath == NULL) {
@@ -138,7 +138,7 @@ int saveTodos(const char *filePath, const todo *list, size_t listLength)
     }
     
     int retVal = E_TODOSTORAGE_SUCCESS;
-    char *jsonStringToSave = createJSONStringFromTodos(list, listLength);
+    char *jsonStringToSave = createJSONStringFromTodos(todos);
     size_t jsonStringToSaveLen = strlen(jsonStringToSave);
     if (fwrite(jsonStringToSave, sizeof(char), strlen(jsonStringToSave), todoFile) != jsonStringToSaveLen) {
         setError("Unable to write all the bytes on the the todo file %s.\nInternal error: %s", filePath, strerror(errno));
@@ -149,13 +149,13 @@ int saveTodos(const char *filePath, const todo *list, size_t listLength)
     return retVal;
 }
 
-char *createJSONStringFromTodos(const todo *list, size_t listLength)
+char *createJSONStringFromTodos(const todoList *todos)
 {
     struct json_object *jsonObj = json_object_new_array();
-    if (list != NULL) {
-        for(size_t i = 0; i < listLength; i++) {
+    if (todos->list != NULL) {
+        for(size_t i = 0; i < todos->length; i++) {
             struct json_object *todoJSONItem = json_object_new_object();
-            json_object_object_add(todoJSONItem, "name", json_object_new_string(list[i].name));
+            json_object_object_add(todoJSONItem, "name", json_object_new_string(todos->list[i].name));
             json_object_array_add(jsonObj, todoJSONItem);
         }
     }

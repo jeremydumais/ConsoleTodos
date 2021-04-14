@@ -1,6 +1,7 @@
 #ifndef COMMANDUPDATE_H
 #define COMMANDUPDATE_H
 
+#include "todoList.h"
 #include <stdbool.h>
 #include <stdlib.h>
 
@@ -13,7 +14,7 @@ typedef struct {
 } commandUpdateArgs;
 
 int parseCommandUpdate(int argc, char **argv, void **cmdUpdateArgs);
-int executeCommandUpdate(void **cmdUpdateArgs, void **list, size_t *listLength);
+int executeCommandUpdate(void **cmdUpdateArgs, todoList *todos);
 void freeCommandUpdate(void **cmdUpdateArgs);
 void printCommandUpdateHelp();
 

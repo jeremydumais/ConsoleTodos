@@ -56,7 +56,7 @@ int parseCommandRemove(int argc, char **argv, void **cmdRemoveArgs)
     return E_SUCCESS;
 }
 
-int executeCommandRemove(void **cmdRemoveArgs, void **list, size_t *listLength) 
+int executeCommandRemove(void **cmdRemoveArgs, todoList *todos) 
 {
     /*commandAddArgs *args = *((commandAddArgs **)cmdAddArgs);
     if (*list == NULL) {

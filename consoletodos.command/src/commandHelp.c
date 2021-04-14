@@ -2,13 +2,12 @@
 #include "command.h"
 #include <stdio.h>
 
-int executeCommandHelp(void **args, void **list, size_t *listLength) 
+int executeCommandHelp(void **args, todoList *todos) 
 {
     if (*args != NULL) {
         return E_INVALIDARGS;
     }
-    (void)list; //Not used
-    (void)listLength; //Not used
+    (void)todos; //Not used
 
     printf("Available commands\n");
     printf("  add       Add a new todo\n");   

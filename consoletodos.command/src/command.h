@@ -9,7 +9,7 @@
 #include "commandUpdate.h"
 #include "commandRemove.h"
 #include "commandUtil.h"
-#include "todo.h"
+#include "todoList.h"
 #include <stdbool.h>
 #include <stddef.h>
 
@@ -19,7 +19,7 @@
 typedef struct {
     char *name;
     int (*parseCommand)(int argc, char **argv, void **cmdAddArgs);
-    int (*executeCommand)(void **cmdAddArgs, void **list, size_t *listLength);
+    int (*executeCommand)(void **cmdAddArgs, todoList *todos);
     void (*printHelp)();
     void (*freeCommandArgs)(void **cmdAddArgs);
     
@@ -37,7 +37,7 @@ enum _command_error {
 int launchStorageInitialization();
 int parseCommand(const char *cmdStr, char *cmd, size_t cmdLength, void **cmdArgs);
 bool isCommandAvailable(const char *cmdStr);
-void executeCommand(const char *cmd, void **cmdArgs, void **list, size_t *listLength);
+void executeCommand(const char *cmd, void **cmdArgs, todoList *todos);
 void freeCommand(const char *cmd, void **cmdArgs);
 void printCommandHelp(const char *cmd);
 

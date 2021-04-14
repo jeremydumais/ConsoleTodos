@@ -22,31 +22,36 @@ void runTodoTests()
 
 void createTodo_WithNullTodo_ReturnMinus1() 
 {
-    TEST_ASSERT_EQUAL_INT(-1, createTodo(NULL, "test"));
+    unsigned int lastAssignedRuntimeId = 0;
+    TEST_ASSERT_EQUAL_INT(-1, createTodo(NULL, "test", &lastAssignedRuntimeId));
 }
 
 void createTodo_WithNullName_ReturnMinus1() 
 {
     todo item;
-    TEST_ASSERT_EQUAL_INT(-1, createTodo(&item, NULL));
+    unsigned int lastAssignedRuntimeId = 0;
+    TEST_ASSERT_EQUAL_INT(-1, createTodo(&item, NULL, &lastAssignedRuntimeId));
 }
 
 void createTodo_WithEmptyName_ReturnMinus1() 
 {
     todo item;
-    TEST_ASSERT_EQUAL_INT(-1, createTodo(&item, ""));
+    unsigned int lastAssignedRuntimeId = 0;
+    TEST_ASSERT_EQUAL_INT(-1, createTodo(&item, "", &lastAssignedRuntimeId));
 }
 
 void createTodo_WithWhiteSpaceName_ReturnMinus1() 
 {
     todo item;
-    TEST_ASSERT_EQUAL_INT(-1, createTodo(&item, "     "));
+    unsigned int lastAssignedRuntimeId = 0;
+    TEST_ASSERT_EQUAL_INT(-1, createTodo(&item, "     ", &lastAssignedRuntimeId));
 }
 
 void createTodo_WithOneCharName_Return0() 
 {
     todo item;
-    TEST_ASSERT_EQUAL_INT(0, createTodo(&item, "a"));
+    unsigned int lastAssignedRuntimeId = 0;
+    TEST_ASSERT_EQUAL_INT(0, createTodo(&item, "a", &lastAssignedRuntimeId));
     free(item.name);
 }
 

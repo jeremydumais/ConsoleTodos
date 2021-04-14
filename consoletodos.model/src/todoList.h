@@ -15,6 +15,6 @@ typedef struct {
  * @param list the pointer of the todo list.
  * @param listLength the pointer of the todo list length.
  */
-void freeTodoList(todo **list, size_t *listLength);
+void freeTodoList(todoList *todos);
 
 #endif

@@ -1,6 +1,7 @@
 #ifndef COMMANDSHOW_H
 #define COMMANDSHOW_H
 
+#include "todoList.h"
 #include <stdbool.h>
 #include <stdlib.h>
 
@@ -9,7 +10,7 @@ typedef struct {
 } commandShowArgs;
 
 int parseCommandShow(int argc, char **argv, void **cmdAddArgs);
-int executeCommandShow(void **cmdAddArgs, void **list, size_t *listLength);
+int executeCommandShow(void **cmdAddArgs, todoList *todos);
 void freeCommandShow(void **cmdAddArgs);
 void printCommandShowHelp();
 

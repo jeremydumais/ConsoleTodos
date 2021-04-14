@@ -38,7 +38,7 @@ int initializeStorage();
  * @return On success the function return E_TODOSTORAGE_SUCCESS, otherwise
  * it return E_TODOSTORAGE_ERROR
  */
-int loadTodos(const char *filePath, todo **list, size_t *listLength);
+int loadTodos(const char *filePath, todoList *todos);
 
 /**
  * @brief Save the todos to the todos stored file.
@@ -49,7 +49,7 @@ int loadTodos(const char *filePath, todo **list, size_t *listLength);
  * @return On success the function return E_TODOSTORAGE_SUCCESS, otherwise
  * it return E_TODOSTORAGE_ERROR 
  */
-int saveTodos(const char *filePath, const todo *list, size_t listLength);
+int saveTodos(const char *filePath, const todoList *todos);
 
 /**
  * @brief Create a new config file. This function is useful when no 

@@ -12,16 +12,16 @@ int parseCommandSave(int argc, char **argv, void **cmdSaveArgs)
     return E_SUCCESS;
 }
 
-int executeCommandSave(void **cmdSaveArgs, void **list, size_t *listLength) 
+int executeCommandSave(void **cmdSaveArgs, todoList *todos) 
 {
     commandSaveArgs *args = *((commandSaveArgs **)cmdSaveArgs);
-    int saveResult = saveTodos((args != NULL ? args->filePath : NULL), (todo *)(*list), *listLength);
+    int saveResult = saveTodos((args != NULL ? args->filePath : NULL), todos);
     if (saveResult != E_TODOSTORAGE_SUCCESS) {
         printError(getLastStorageError());
         return E_EXECUTIONERROR;
     }
     
-    printf("%zu todo(s) saved.\n", *listLength);
+    printf("%zu todo(s) saved.\n", todos->length);
     return E_SUCCESS;
 }
 
