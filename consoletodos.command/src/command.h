@@ -7,12 +7,14 @@
 #include "commandSave.h"
 #include "commandShow.h"
 #include "commandUpdate.h"
+#include "commandRemove.h"
 #include "commandUtil.h"
 #include "todo.h"
 #include <stdbool.h>
 #include <stddef.h>
 
-#define COMMANDNB 8
+#define COMMANDNB 9
+#define BASE10 10 //Used for int argument conversion
 
 typedef struct {
     char *name;

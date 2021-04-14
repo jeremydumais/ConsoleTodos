@@ -2,6 +2,7 @@
 #define TODOSTORAGE_H
 
 #include "todo.h"
+#include "todoList.h"
 #include <stdbool.h>
 
 /**

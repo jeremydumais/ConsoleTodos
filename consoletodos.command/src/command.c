@@ -12,6 +12,7 @@ static commandDefinition commandDefinitions[COMMANDNB] = {
     {.name = "version", .parseCommand = NULL, .executeCommand = NULL, .printHelp = NULL, .freeCommandArgs = NULL},
     {.name = "add", .parseCommand = &parseCommandAdd, .executeCommand = &executeCommandAdd, .printHelp = &printCommandAddHelp, .freeCommandArgs = &freeCommandAdd},
     {.name = "update", .parseCommand = &parseCommandUpdate, .executeCommand = &executeCommandUpdate, .printHelp = &printCommandUpdateHelp, .freeCommandArgs = &freeCommandUpdate},
+    {.name = "remove", .parseCommand = &parseCommandRemove, .executeCommand = &executeCommandRemove, .printHelp = &printCommandRemoveHelp, .freeCommandArgs = &freeCommandRemove},
     {.name = "show", .parseCommand = &parseCommandShow, .executeCommand = &executeCommandShow, .printHelp = &printCommandShowHelp, .freeCommandArgs = NULL},
     {.name = "load", .parseCommand = &parseCommandLoad, .executeCommand = &executeCommandLoad, .printHelp = NULL, .freeCommandArgs = &freeCommandLoad},
     {.name = "save", .parseCommand = &parseCommandSave, .executeCommand = &executeCommandSave, .printHelp = NULL, .freeCommandArgs = &freeCommandSave}};

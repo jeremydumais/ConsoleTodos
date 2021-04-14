@@ -9,8 +9,6 @@
 #include <string.h>
 #include <getopt.h>
 
-#define BASE10 10
-
 static struct option long_options_update[] =
 {
     {"help",     no_argument,       0, '?'},

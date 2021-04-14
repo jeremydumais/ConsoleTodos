@@ -13,6 +13,7 @@ int executeCommandHelp(void **args, void **list, size_t *listLength)
     printf("Available commands\n");
     printf("  add       Add a new todo\n");   
     printf("  update    Update the fields of a todo\n");   
+    printf("  remove    Remove a todo\n");   
     printf("  show      Print the todo list\n");   
     printf("  load      Load the list of todos\n");
     printf("  save      Save the list of todos\n");

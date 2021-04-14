@@ -1,6 +1,7 @@
 set(PROJECT_NAME   "consoletodos.model")
 
 add_library(${PROJECT_NAME} SHARED ${CMAKE_CURRENT_SOURCE_DIR}/src/todo.c
+                                   ${CMAKE_CURRENT_SOURCE_DIR}/src/todoList.c                
                                    ${CMAKE_CURRENT_SOURCE_DIR}/src/typeUtil.c)                 
 
 if ("${CMAKE_C_COMPILER_ID}" STREQUAL "GNU") #gcc

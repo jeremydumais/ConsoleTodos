@@ -7,6 +7,7 @@ add_library(${PROJECT_NAME} SHARED ${CMAKE_CURRENT_SOURCE_DIR}/src/command.c
                                    ${CMAKE_CURRENT_SOURCE_DIR}/src/commandLoad.c                 
                                    ${CMAKE_CURRENT_SOURCE_DIR}/src/commandUtil.c                
                                    ${CMAKE_CURRENT_SOURCE_DIR}/src/commandUpdate.c                 
+                                   ${CMAKE_CURRENT_SOURCE_DIR}/src/commandRemove.c                 
                                    ${CMAKE_CURRENT_SOURCE_DIR}/src/commandSave.c)                 
 
 target_link_libraries(${PROJECT_NAME} consoletodos.model consoletodos.storage)
