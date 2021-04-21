@@ -19,9 +19,9 @@ typedef struct {
  * once it's not needed anymore.
  * 
  * @param name the name (title) of the todo
- * @return On success return 0, otherwise return -1
+ * @return On success return an pointer to an allocated todo, otherwise return NULL
  */
-int createTodo(todo *todoItem, const char *name, unsigned int *lastAssignedRuntimeId);
+todo *createTodo(const char *name);
 
 /**
  * @brief Update and existing todo item. 
@@ -31,5 +31,29 @@ int createTodo(todo *todoItem, const char *name, unsigned int *lastAssignedRunti
  * @return On success return 0, otherwise return -1
  */
 int updateTodo(todo *todoItem, const char *name);
+
+/**
+ * @brief Free the todo item and it's resources.
+ * 
+ * @param todoItem the todo item to free. This param can be NULL.
+ */
+void freeTodo(todo **todoItem);
+
+/**
+ * @brief Free the ressources of a todo item. 
+ * This function free for example the name (char *) but now the todo struct memory.
+ * 
+ * @param todoItem the todo item to free. This param can be NULL.
+ */
+void freeTodoContent(todo *todoItem);
+
+/**
+ * @brief Copy all the values and memory from the 
+ * src memory pointer to the dst memory pointer.
+ * 
+ * @param src the todo pointer item that act as the source
+ * @param dst the todo pointer item that act as the destination
+ */
+void cloneTodo(todo *src, todo *dst);
 
 #endif

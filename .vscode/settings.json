@@ -31,6 +31,8 @@
         "time.h": "c",
         "shellutil.h": "c",
         "commandsave.h": "c",
-        "stdarg.h": "c"
+        "stdarg.h": "c",
+        "string_view": "c",
+        "typeutiltest.h": "c"
     }
 }

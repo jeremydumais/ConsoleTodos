@@ -10,10 +10,18 @@ typedef struct {
 } todoList;
 
 /**
+ * @brief Add a new todo at the end of the list
+ * 
+ * @param todos the pointer of the todo list. 
+ * @param item the pointer of the todo to append in the list. 
+ * @return On success the function return 0, otherwise it return -1 
+ */
+int appendTodo(todoList *todos, todo *item);
+
+/**
  * @brief Free a todo allocated object.
  * 
- * @param list the pointer of the todo list.
- * @param listLength the pointer of the todo list length.
+ * @param todos the pointer of the todo list.
  */
 void freeTodoList(todoList *todos);
 

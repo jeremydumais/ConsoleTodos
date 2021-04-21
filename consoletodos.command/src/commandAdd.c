@@ -72,13 +72,13 @@ int executeCommandAdd(void **cmdAddArgs, todoList *todos)
     else {
         todos->list = realloc(todos->list, sizeof(todo) * (todos->length + 1));
     }
-
-    if (createTodo(todos->list + (todos->length), args->title, &todos->lastRuntimeId) == 0) {
+    //TODO Fix the todo creation
+    /*if (createTodo(todos->list + (todos->length), args->title, &todos->lastRuntimeId) == 0) {
         todos->length++;
     }
     else {
         printError("Unable to create the todo");
-    }
+    }*/
 
     return E_SUCCESS;
 }

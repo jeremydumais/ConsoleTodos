@@ -1,11 +1,14 @@
 #include "todoStorageTest.h"
 #include "todo.h"
+#include "todoList.h"
 #include "unity.h"
 #include <stdlib.h>
 #include <string.h>
 
-extern void createTodosFromJSONString(const char *fileContent, todo **list, size_t *listLength);
-extern char *createJSONStringFromTodos(const todo *list, size_t listLength);
+extern void createTodosFromJSONString(const char *fileContent, todoList *todos);
+extern char *createJSONStringFromTodos(const todoList *todos);
+todoList getNewEmptyTodoList();
+todoList getNewTodoList(size_t nbOfTodos);
 
 void runTodoStorageTests() 
 {
@@ -22,82 +25,91 @@ void runTodoStorageTests()
     RUN_TEST(createJSONStringFromTodos_WithListTwoTodosOnlyName_ReturnJSONArrayTwoItems);
 }
 
+todoList getNewEmptyTodoList()
+{
+    todoList todos;
+    todos.list = NULL;
+    todos.length = 0;
+    todos.lastRuntimeId = 0;
+    return todos;
+}
+
+todoList getNewTodoList(size_t nbOfTodos) 
+{
+    todoList todos;
+    todos.list = malloc(sizeof(todo) * nbOfTodos);
+    todos.length = nbOfTodos;
+    todos.lastRuntimeId = 0;
+    return todos;
+}
+
+
 void createTodosFromJSONString_WithNullStr_ReturnZeroTodo() 
 {
-    todo *list = NULL;
-    size_t length = 0;
-    createTodosFromJSONString(NULL, &list, &length);
-    TEST_ASSERT_NULL(list);
-    TEST_ASSERT_EQUAL_size_t(0, length);
+    todoList todos = getNewEmptyTodoList();
+    createTodosFromJSONString(NULL, &todos);
+    TEST_ASSERT_NULL(todos.list);
+    TEST_ASSERT_EQUAL_size_t(0, todos.length);
 }
 
 void createTodosFromJSONString_WithEmptyStr_ReturnZeroTodo() 
 {
-    todo *list = NULL;
-    size_t length = 0;
-    createTodosFromJSONString("", &list, &length);
-    TEST_ASSERT_NULL(list);
-    TEST_ASSERT_EQUAL_size_t(0, length);
+    todoList todos = getNewEmptyTodoList();
+    createTodosFromJSONString("", &todos);
+    TEST_ASSERT_NULL(todos.list);
+    TEST_ASSERT_EQUAL_size_t(0, todos.length);
 }
 
 void createTodosFromJSONString_WithWhiteSpacesStr_ReturnZeroTodo()
 {
-    todo *list = NULL;
-    size_t length = 0;
-    createTodosFromJSONString("           ", &list, &length);
-    TEST_ASSERT_NULL(list);
-    TEST_ASSERT_EQUAL_size_t(0, length);
+    todoList todos = getNewEmptyTodoList();
+    createTodosFromJSONString("           ", &todos);
+    TEST_ASSERT_NULL(todos.list);
+    TEST_ASSERT_EQUAL_size_t(0, todos.length);
 }
 
 void createTodosFromJSONString_WithNotArrayStr_ReturnZeroTodo() 
 {
-    todo *list = NULL;
-    size_t length = 0;
-    createTodosFromJSONString("{}", &list, &length);
-    TEST_ASSERT_NULL(list);
-    TEST_ASSERT_EQUAL_size_t(0, length);
+    todoList todos = getNewEmptyTodoList();
+    createTodosFromJSONString("{}", &todos);
+    TEST_ASSERT_NULL(todos.list);
+    TEST_ASSERT_EQUAL_size_t(0, todos.length);
 }
 
 void createTodosFromJSONString_WithEmptyArrayStr_ReturnZeroTodo() 
 {
-    todo *list = NULL;
-    size_t length = 0;
-    createTodosFromJSONString("[]", &list, &length);
-    TEST_ASSERT_NULL(list);
-    TEST_ASSERT_EQUAL_size_t(0, length);
-    free(list);
+    todoList todos = getNewEmptyTodoList();
+    createTodosFromJSONString("[]", &todos);
+    TEST_ASSERT_NULL(todos.list);
+    TEST_ASSERT_EQUAL_size_t(0, todos.length);
+    freeTodoList(&todos);
 }
 
 void createTodosFromJSONString_WithOneTodoOnlyNameStr_ReturnOneTodo() 
 {
-    todo *list = NULL;
-    size_t length = 0;
-    createTodosFromJSONString("[ { \"name\": \"test\" } ]", &list, &length);
-    TEST_ASSERT_NOT_NULL(list);
-    TEST_ASSERT_EQUAL_size_t(1, length);
-    TEST_ASSERT_EQUAL_STRING("test", list[0].name);
-    free(list[0].name);
-    free(list);
+    todoList todos = getNewEmptyTodoList();
+    createTodosFromJSONString("[ { \"name\": \"test\" } ]", &todos);
+    TEST_ASSERT_NOT_NULL(todos.list);
+    TEST_ASSERT_EQUAL_size_t(1, todos.length);
+    TEST_ASSERT_EQUAL_STRING("test", todos.list[0].name);
+    freeTodoList(&todos);
 }
 
 void createTodosFromJSONString_WithTwoTodosOnlyNameStr_ReturnTwoTodos() 
 {
-    todo *list = NULL;
-    size_t length = 0;
-    createTodosFromJSONString("[ { \"name\": \"test\" }, { \"name\": \"test2\" } ]", &list, &length);
-    TEST_ASSERT_NOT_NULL(list);
-    TEST_ASSERT_EQUAL_size_t(2, length);
-    TEST_ASSERT_EQUAL_STRING("test", list[0].name);
-    TEST_ASSERT_EQUAL_STRING("test2", list[1].name);
-    free(list[0].name);
-    free(list[1].name);
-    free(list);
+    todoList todos = getNewEmptyTodoList();
+    createTodosFromJSONString("[ { \"name\": \"test\" }, { \"name\": \"test2\" } ]", &todos);
+    TEST_ASSERT_NOT_NULL(todos.list);
+    TEST_ASSERT_EQUAL_size_t(2, todos.length);
+    TEST_ASSERT_EQUAL_STRING("test", todos.list[0].name);
+    TEST_ASSERT_EQUAL_STRING("test2", todos.list[1].name);
+    freeTodoList(&todos);
+
 }
 
 void createJSONStringFromTodos_WithNullList_ReturnEmptyJSONArray() 
 {
-    todo *list = NULL;
-    char *actual = createJSONStringFromTodos(list, 0);
+    char *actual = createJSONStringFromTodos(NULL);
     TEST_ASSERT_EQUAL_STRING("[ ]", actual);
     free(actual);
 
@@ -105,25 +117,24 @@ void createJSONStringFromTodos_WithNullList_ReturnEmptyJSONArray()
 
 void createJSONStringFromTodos_WithListOneTodoOnlyName_ReturnJSONArrayOneItem() 
 {
-    todo list[1];
-    list[0].name = malloc(sizeof(char) * 5);
-    strcpy(list[0].name, "test");
-    char *actual = createJSONStringFromTodos(list, 1);
+    todoList todos = getNewTodoList(1);
+    todos.list[0].name = malloc(sizeof(char) * 5);
+    strcpy(todos.list[0].name, "test");
+    char *actual = createJSONStringFromTodos(&todos);
     TEST_ASSERT_EQUAL_STRING("[ { \"name\": \"test\" } ]", actual);
-    free(list[0].name);
+    freeTodoList(&todos);
     free(actual);
 }
 
 void createJSONStringFromTodos_WithListTwoTodosOnlyName_ReturnJSONArrayTwoItems() 
 {
-    todo list[2];
-    list[0].name = malloc(sizeof(char) * 5);
-    strcpy(list[0].name, "test");
-    list[1].name = malloc(sizeof(char) * 6);
-    strcpy(list[1].name, "test2");
-    char *actual = createJSONStringFromTodos(list, 2);
+    todoList todos = getNewTodoList(2);
+    todos.list[0].name = malloc(sizeof(char) * 5);
+    strcpy(todos.list[0].name, "test");
+    todos.list[1].name = malloc(sizeof(char) * 6);
+    strcpy(todos.list[1].name, "test2");
+    char *actual = createJSONStringFromTodos(&todos);
     TEST_ASSERT_EQUAL_STRING("[ { \"name\": \"test\" }, { \"name\": \"test2\" } ]", actual);
-    free(list[0].name);
-    free(list[1].name);
+    freeTodoList(&todos);
     free(actual);
 }

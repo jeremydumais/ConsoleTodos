@@ -114,9 +114,10 @@ void createTodosFromJSONString(const char *fileContent, todoList *todos)
             if (todoJSONObjNameField == NULL) {
                 continue;
             }
-            if (createTodo(todos->list + i, json_object_get_string(todoJSONObjNameField), &todos->lastRuntimeId) == 0) {
+            //TODO Fix the todo creation
+            /*if (createTodo(todos->list + i, json_object_get_string(todoJSONObjNameField), &todos->lastRuntimeId) == 0) {
                 todos->length++;
-            }
+            }*/
         }
     }
     //Free the acquires ressources
@@ -152,7 +153,7 @@ int saveTodos(const char *filePath, const todoList *todos)
 char *createJSONStringFromTodos(const todoList *todos)
 {
     struct json_object *jsonObj = json_object_new_array();
-    if (todos->list != NULL) {
+    if (todos != NULL && todos->list != NULL) {
         for(size_t i = 0; i < todos->length; i++) {
             struct json_object *todoJSONItem = json_object_new_object();
             json_object_object_add(todoJSONItem, "name", json_object_new_string(todos->list[i].name));

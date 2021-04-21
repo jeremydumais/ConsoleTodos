@@ -33,8 +33,7 @@ int initializeStorage();
  * @brief Load the todos from the todos stored file.
  * 
  * @param filePath the filename including the full path where the todos are stored
- * @param list the pointer of the todo list
- * @param listLength the pointer of the list length
+ * @param todos the pointer of the todo list
  * @return On success the function return E_TODOSTORAGE_SUCCESS, otherwise
  * it return E_TODOSTORAGE_ERROR
  */
@@ -44,8 +43,7 @@ int loadTodos(const char *filePath, todoList *todos);
  * @brief Save the todos to the todos stored file.
  * 
  * @param filePath the filename including the full path where the todos are stored
- * @param list the pointer of the todo list
- * @param listLength the pointer of the list length
+ * @param todos the pointer of the todo list
  * @return On success the function return E_TODOSTORAGE_SUCCESS, otherwise
  * it return E_TODOSTORAGE_ERROR 
  */

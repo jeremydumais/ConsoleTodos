@@ -1,3 +1,4 @@
+#include "main.h"
 #include "todoTest.h"
 #include "todo.h"
 #include "unity.h"
@@ -6,11 +7,10 @@
 
 void runTodoTests()
 {
-    RUN_TEST(createTodo_WithNullTodo_ReturnMinus1);
-    RUN_TEST(createTodo_WithNullName_ReturnMinus1);
-    RUN_TEST(createTodo_WithEmptyName_ReturnMinus1);
-    RUN_TEST(createTodo_WithWhiteSpaceName_ReturnMinus1);
-    RUN_TEST(createTodo_WithOneCharName_Return0);
+    RUN_TEST(createTodo_WithNullName_ReturnNULL);
+    RUN_TEST(createTodo_WithEmptyName_ReturnNULL);
+    RUN_TEST(createTodo_WithWhiteSpaceName_ReturnNULL);
+    RUN_TEST(createTodo_WithOneCharName_ReturnSuccess);
 
     RUN_TEST(updateTodo_WithNullTodo_ReturnMinus1);
     RUN_TEST(updateTodo_WithNullName_ReturnMinus1);
@@ -18,41 +18,35 @@ void runTodoTests()
     RUN_TEST(updateTodo_WithWhiteSpaceName_ReturnMinus1);
     RUN_TEST(updateTodo_WithValidDifferentName_Return0);
     RUN_TEST(updateTodo_WithValidSameName_Return0);
+    
+    RUN_TEST(freeTodo_WithNullTodo_ReturnSuccess);
+    RUN_TEST(freeTodo_WithNonNullTodo_ReturnSuccess);
+
+    RUN_TEST(freeTodoContent_WithNullTodo_ReturnSuccess);
+
+    RUN_TEST(cloneTodo_WithValidSrcAndOnlyName_DoNothing);
 }
 
-void createTodo_WithNullTodo_ReturnMinus1() 
+void createTodo_WithNullName_ReturnNULL() 
 {
-    unsigned int lastAssignedRuntimeId = 0;
-    TEST_ASSERT_EQUAL_INT(-1, createTodo(NULL, "test", &lastAssignedRuntimeId));
+    TEST_ASSERT_NULL(createTodo(NULL));
 }
 
-void createTodo_WithNullName_ReturnMinus1() 
+void createTodo_WithEmptyName_ReturnNULL() 
 {
-    todo item;
-    unsigned int lastAssignedRuntimeId = 0;
-    TEST_ASSERT_EQUAL_INT(-1, createTodo(&item, NULL, &lastAssignedRuntimeId));
+    TEST_ASSERT_NULL(createTodo(""));
 }
 
-void createTodo_WithEmptyName_ReturnMinus1() 
+void createTodo_WithWhiteSpaceName_ReturnNULL() 
 {
-    todo item;
-    unsigned int lastAssignedRuntimeId = 0;
-    TEST_ASSERT_EQUAL_INT(-1, createTodo(&item, "", &lastAssignedRuntimeId));
+    TEST_ASSERT_NULL(createTodo("     "));
 }
 
-void createTodo_WithWhiteSpaceName_ReturnMinus1() 
+void createTodo_WithOneCharName_ReturnSuccess() 
 {
-    todo item;
-    unsigned int lastAssignedRuntimeId = 0;
-    TEST_ASSERT_EQUAL_INT(-1, createTodo(&item, "     ", &lastAssignedRuntimeId));
-}
-
-void createTodo_WithOneCharName_Return0() 
-{
-    todo item;
-    unsigned int lastAssignedRuntimeId = 0;
-    TEST_ASSERT_EQUAL_INT(0, createTodo(&item, "a", &lastAssignedRuntimeId));
-    free(item.name);
+    todo *item = createTodo("a");
+    TEST_ASSERT_NOT_NULL(item);
+    freeTodo(&item);
 }
 
 void updateTodo_WithNullTodo_ReturnMinus1() 
@@ -62,38 +56,60 @@ void updateTodo_WithNullTodo_ReturnMinus1()
 
 void updateTodo_WithNullName_ReturnMinus1() 
 {
-    todo item;
-    TEST_ASSERT_EQUAL_INT(-1, updateTodo(&item, NULL));
+    TEST_ASSERT_EQUAL_INT(-1, updateTodo(todoSample1, NULL));
 }
 
 void updateTodo_WithEmptyName_ReturnMinus1() 
 {
-    todo item;
-    TEST_ASSERT_EQUAL_INT(-1, updateTodo(&item, ""));
+    TEST_ASSERT_EQUAL_INT(-1, updateTodo(todoSample1, ""));
 }
 
 void updateTodo_WithWhiteSpaceName_ReturnMinus1() 
 {
-    todo item;
-    TEST_ASSERT_EQUAL_INT(-1, updateTodo(&item, "     "));
+    TEST_ASSERT_EQUAL_INT(-1, updateTodo(todoSample1, "     "));
 }
 
 void updateTodo_WithValidDifferentName_Return0() 
 {
-    todo item;
-    item.name = malloc(sizeof(char) * 5);
-    strcpy(item.name, "test");
-    TEST_ASSERT_EQUAL_INT(0, updateTodo(&item, "new name"));
-    TEST_ASSERT_EQUAL_STRING("new name", item.name);
-    free(item.name);
+    TEST_ASSERT_EQUAL_INT(0, updateTodo(todoSample1, "new name"));
+    TEST_ASSERT_EQUAL_STRING("new name", todoSample1->name);
 }
 
 void updateTodo_WithValidSameName_Return0() 
 {
-    todo item;
-    item.name = malloc(sizeof(char) * 5);
-    strcpy(item.name, "test");
-    TEST_ASSERT_EQUAL_INT(0, updateTodo(&item, "test"));
-    TEST_ASSERT_EQUAL_STRING("test", item.name);
-    free(item.name);
+    TEST_ASSERT_EQUAL_INT(0, updateTodo(todoSample1, "test"));
+    TEST_ASSERT_EQUAL_STRING("test", todoSample1->name);
+}
+
+void freeTodo_WithNullTodo_ReturnSuccess() 
+{
+    freeTodo(NULL);
+}
+
+void freeTodo_WithNonNullTodo_ReturnSuccess() 
+{
+    freeTodo(&todoSample1);
+    TEST_ASSERT_NULL(todoSample1);
+}
+
+void freeTodoContent_WithNullTodo_ReturnSuccess() 
+{
+    freeTodoContent(todoSample1);
+    TEST_ASSERT_NOT_NULL(todoSample1);
+    TEST_ASSERT_NULL(todoSample1->name);
+    TEST_ASSERT_NULL(todoSample1->description);
+    TEST_ASSERT_EQUAL_UINT(0, todoSample1->runtimeId);
+    TEST_ASSERT_EQUAL_INT(3, todoSample1->priority);
+    TEST_ASSERT_EQUAL_INT(0, todoSample1->datetime);
+}
+
+void cloneTodo_WithValidSrcAndOnlyName_DoNothing() 
+{
+    todo dst;
+    cloneTodo(todoSample1, &dst);
+    TEST_ASSERT_EQUAL_STRING(todoSample1->name, dst.name);
+    TEST_ASSERT_NULL(dst.description);
+    TEST_ASSERT_EQUAL_UINT(todoSample1->runtimeId, dst.runtimeId);
+    TEST_ASSERT_EQUAL_INT(todoSample1->priority, dst.priority);
+    TEST_ASSERT_EQUAL_INT(todoSample1->datetime, dst.datetime);
 }
