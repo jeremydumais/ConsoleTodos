@@ -66,19 +66,16 @@ int parseCommandAdd(int argc, char **argv, void **cmdAddArgs)
 int executeCommandAdd(void **cmdAddArgs, todoList *todos) 
 {
     commandAddArgs *args = *((commandAddArgs **)cmdAddArgs);
-    if (todos->list == NULL) {
-        todos->list = malloc(sizeof(todo));
-    }
-    else {
-        todos->list = realloc(todos->list, sizeof(todo) * (todos->length + 1));
-    }
-    //TODO Fix the todo creation
-    /*if (createTodo(todos->list + (todos->length), args->title, &todos->lastRuntimeId) == 0) {
-        todos->length++;
-    }
-    else {
+    todo *newTodo = createTodo(args->title);
+    if (newTodo == NULL) {
         printError("Unable to create the todo");
-    }*/
+        return E_EXECUTIONERROR;
+    }
+    if (appendTodo(todos, newTodo) == -1) {
+        printError("Unable to add the todo in the todo list");
+        return E_EXECUTIONERROR;
+    }
+    freeTodo(&newTodo);
 
     return E_SUCCESS;
 }

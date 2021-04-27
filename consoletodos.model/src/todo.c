@@ -4,6 +4,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+bool compareString(const char *first, const char *second);
+
 todo *createTodo(const char *name)
 {
     if (isStringEmptyOrWhiteSpace(name)) {
@@ -60,8 +62,12 @@ void freeTodoContent(todo *todoItem)
     }
 }
 
-void cloneTodo(todo *src, todo *dst) 
+int cloneTodo(todo *src, todo *dst) 
 {
+    if (src == NULL || dst == NULL) {
+        return -1;
+    }
+
     if (src->name != NULL) {
         dst->name = malloc(sizeof(char) * (strlen(src->name) + 1));
         strcpy(dst->name, src->name);
@@ -79,4 +85,45 @@ void cloneTodo(todo *src, todo *dst)
     dst->priority = src->priority;
     dst->runtimeId = src->runtimeId;
     dst->datetime = src->datetime;
+    return 0;
+}
+
+bool isTodoEqual(todo *first, todo *second) 
+{
+    if ((first == NULL && second != NULL) || 
+        (first != NULL && second == NULL)) {
+        return false;
+    }
+    if (first == second) {
+        return true;
+    }
+
+    if (!compareString(first->name, second->name)) {
+        return false;
+    }
+
+    if (!compareString(first->description, second->description)) {
+        return false;
+    }
+    if (first->runtimeId != second->runtimeId) {
+        return false;
+    }
+    if (first->datetime != second->datetime) {
+        return false;
+    }
+    if (first->priority != second->priority) {
+        return false;
+    }
+
+    return true;
+}
+
+bool compareString(const char *first, const char *second) 
+{
+    if ((first != NULL && second == NULL) ||
+        (first == NULL && second != NULL) ||
+        (first != NULL && second != NULL && strcmp(first, second) != 0)) {
+        return false;
+    }
+    return true;
 }

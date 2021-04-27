@@ -16,7 +16,7 @@ static char todoFileName[PATH_MAX + 1];
 static char configDirectory[PATH_MAX + 1];
 static char configFilePath[PATH_MAX + 1];
 
-void createTodosFromJSONString(const char *fileContent, todoList *todos);
+bool createTodosFromJSONString(const char *fileContent, todoList *todos);
 char *createJSONStringFromTodos(const todoList *todos);
 bool directoryExist(const char *folderPath);
 bool fileExist(const char *filePath);
@@ -84,45 +84,70 @@ int loadTodos(const char *filePath, todoList *todos)
     fread(fileContent, sizeof(char), todoFileSize, todoFile);
     fclose(todoFile);
     fileContent[todoFileSize] = '\0';
-    createTodosFromJSONString(fileContent, todos);
-
+    bool creationResult = createTodosFromJSONString(fileContent, todos);
     free(fileContent);
+    if (!creationResult) {
+        return E_TODOSTORAGE_ERROR;
+    }
+
     return E_TODOSTORAGE_SUCCESS;
 }
 
-void createTodosFromJSONString(const char *fileContent, todoList *todos)
+bool createTodosFromJSONString(const char *fileContent, todoList *todos)
 {
     if (fileContent == NULL) {
-        return;
+        setError("The file content is null");
+        return false;
     }
     //Parse the file content to a json_object struct
     struct json_object *jsonObj = json_tokener_parse(fileContent);
     if (json_object_get_type(jsonObj) != json_type_array) {
         json_object_put(jsonObj);
-        return;
+        setError("The file content is not a json array");
+        return false;
     }
     size_t fileTodosCount = json_object_array_length(jsonObj);
     if (fileTodosCount == 0) {
         json_object_put(jsonObj);
-        return;
+        return true;
     }
-    todos->list = malloc(sizeof(todo) * fileTodosCount);
+
+    bool anErrorOccured = false;
     for(size_t i = 0; i < fileTodosCount; i++) {
         struct json_object *todoJSONObj = json_object_array_get_idx(jsonObj, i);
         if (todoJSONObj != NULL) {
             struct json_object *todoJSONObjNameField = json_object_object_get(todoJSONObj, "name");
             if (todoJSONObjNameField == NULL) {
-                continue;
+                //TODO to be tested
+                anErrorOccured = true;
+                setError("The todo item json string doesn't contains a field \"name\" : %s", json_object_to_json_string(todoJSONObj));
+                break;
             }
-            //TODO Fix the todo creation
-            /*if (createTodo(todos->list + i, json_object_get_string(todoJSONObjNameField), &todos->lastRuntimeId) == 0) {
-                todos->length++;
-            }*/
+            const char *todoNameValue = json_object_get_string(todoJSONObjNameField);
+            todo *todoItem = createTodo(todoNameValue);
+            if (todoItem == NULL) {
+                anErrorOccured = true;
+                //TODO to be tested
+                setError("Cannot create a todo item from the string %s", todoNameValue);
+                break;
+            }
+            if (appendTodo(todos, todoItem) != 0) {
+                anErrorOccured = true;
+                //TODO to be tested
+                setError("Cannot add the todo item %s to the list", todoNameValue);
+                break;
+            }
+            freeTodo(&todoItem);
         }
+    }
+    if (anErrorOccured) {
+        freeTodoList(todos);
+        return false;
     }
     //Free the acquires ressources
     json_object_put(jsonObj);
     jsonObj = NULL;
+    return true;
 }
 
 int saveTodos(const char *filePath, const todoList *todos) 

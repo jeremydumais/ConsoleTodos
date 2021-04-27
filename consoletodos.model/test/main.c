@@ -4,7 +4,9 @@
 #include "typeUtilTest.h"
 
 todoList emptyTodoList;
+todoList oneItemTodoList;
 todo *todoSample1;
+todo *todoSample2;
 
 void setUp(void) {
     emptyTodoList.list = NULL;
@@ -12,11 +14,17 @@ void setUp(void) {
     emptyTodoList.lastRuntimeId = 0;
 
     todoSample1 = createTodo("Sample1");
+
+    todoSample2 = createTodo("Sample2");
+    appendTodo(&oneItemTodoList, todoSample2);
 }
 
 void tearDown(void) {
+    freeTodo(&todoSample2);
+    freeTodoList(&oneItemTodoList);
+
+    freeTodo(&todoSample1);
     freeTodoList(&emptyTodoList);
-    freeTodo(todoSample1);
 }
 
 int main(void) {

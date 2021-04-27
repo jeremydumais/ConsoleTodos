@@ -1,6 +1,7 @@
 #ifndef TODO_H
 #define TODO_H
 
+#include <stdbool.h>
 #include <time.h>
 
 #define NAMESIZE 128
@@ -53,7 +54,18 @@ void freeTodoContent(todo *todoItem);
  * 
  * @param src the todo pointer item that act as the source
  * @param dst the todo pointer item that act as the destination
+ * @return On success return 0, otherwise return -1
  */
-void cloneTodo(todo *src, todo *dst);
+int cloneTodo(todo *src, todo *dst);
 
+/**
+ * @brief Compare two todos to see if they are the same. 
+ * By the same we mean the same values for all fields.
+ * 
+ * @param first the first todo to compare
+ * @param second the second todo to compare
+ * @return true 
+ * @return false 
+ */
+bool isTodoEqual(todo *first, todo *second);
 #endif

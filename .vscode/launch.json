@@ -43,6 +43,25 @@
             ]
         },
         {
+            "name": "(gdb) ConsoleTodos.Storage.Test",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/consoletodos.storage/test/consoletodos.storage.test",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}/build/consoletodos.storage",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ]
+        },
+        {
             "name": "B&L Model.Test",
             "preLaunchTask": "build all",
             "type": "cppdbg",

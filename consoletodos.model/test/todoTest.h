@@ -19,6 +19,24 @@ void freeTodo_WithNonNullTodo_ReturnSuccess();
 
 void freeTodoContent_WithNullTodo_ReturnSuccess();
 
-void cloneTodo_WithValidSrcAndOnlyName_DoNothing();
+void cloneTodo_WithValidNullSrc_ReturnMinus1();
+void cloneTodo_WithValidNullDst_ReturnMinus1();
+void cloneTodo_WithValidSrcAndOnlyName_ReturnZero();
 
+void isTodoEqual_WithNullFirstAndNotNullSecond_ReturnFalse();
+void isTodoEqual_WithNullNotNullAndSecondNull_ReturnFalse();
+void isTodoEqual_WithFirstAndSecondNull_ReturnTrue();
+void isTodoEqual_WithSecondTodoNameDiff_ReturnFalse();
+void isTodoEqual_WithFirstTodoNameNull_ReturnFalse();
+void isTodoEqual_WithSecondTodoNameNull_ReturnFalse();
+void isTodoEqual_WithFirstAndSecondTodoNameNull_ReturnTrue();
+void isTodoEqual_WithSecondTodoRuntimeIdDiff_ReturnFalse();
+void isTodoEqual_WithSecondTodoDescriptionDiff_ReturnFalse();
+void isTodoEqual_WithFirstTodoDescriptionNull_ReturnFalse();
+void isTodoEqual_WithSecondTodoDescriptionNull_ReturnFalse();
+void isTodoEqual_WithFirstAndSecondTodoDescriptionNull_ReturnTrue();
+void isTodoEqual_WithDateTimeDiff_ReturnFalse();
+void isTodoEqual_WithRuntimeIdDiff_ReturnFalse();
+void isTodoEqual_WithPriorityDiff_ReturnFalse();
+void isTodoEqual_WithAllFieldIdentical_ReturnTrue();
 #endif

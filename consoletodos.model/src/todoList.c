@@ -12,10 +12,12 @@ int appendTodo(todoList *todos, todo *item)
     else {
         todos->list = realloc(todos->list, sizeof(todo) * (todos->length + 1));
     }
-    todos->length++;
     //Clone the todo in the newly memory space created
-
-    //todos->lastRuntimeId++;
+    if (cloneTodo(item, todos->list + todos->length) != 0) {
+        return -1;
+    }
+    todos->list[todos->length].runtimeId = ++(todos->lastRuntimeId);
+    todos->length++;
 
     return 0;
 }
@@ -23,7 +25,7 @@ int appendTodo(todoList *todos, todo *item)
 void freeTodoList(todoList *todos) 
 {
     for(size_t i = 0; i < todos->length; i++) {
-        free(todos->list[i].name);
+        freeTodoContent(todos->list + i);
     }
     free(todos->list);
     todos->list = NULL;
